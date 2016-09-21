@@ -98,6 +98,11 @@ io_modifier:
         }
         ;
 
+background_opt:
+        AND
+        | /*empty*/
+        ;
+
 %%
 
 void
