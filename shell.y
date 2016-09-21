@@ -31,25 +31,27 @@ int yylex();
 %%
 
 goal:	
-	commands
+	command_list
 	;
 
-commands: 
-	command
-	| commands command 
-	;
-
-command: simple_command
+command_list:
+        command_list command_line
+        | command_line
         ;
 
-simple_command:	
-	command_and_args io_modifier_list NEWLINE {
+command_line:	
+	pipe_list io_modifier_list background_opt NEWLINE {
 		printf("   Yacc: Execute command\n");
 		Command::_currentCommand.execute();
 	}
 	| NEWLINE 
 	| error NEWLINE { yyerrok; }
 	;
+
+pipe_list:
+        pipe_list PIPE command_and_args
+        | command_and_args
+        ;
 
 command_and_args:
 	command_word argument_list {
