@@ -99,7 +99,9 @@ io_modifier:
         ;
 
 background_opt:
-        AND
+        AND {
+                printf("   Yacc: insert background\n");
+                Command::_currentCommand._background = 1;
         | /*empty*/
         ;
 
