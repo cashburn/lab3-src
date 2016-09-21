@@ -99,7 +99,7 @@ io_modifier:
         | GREATAND WORD {
                 printf("   Yacc: insert output & error \"%s\"\n", $2);
                 Command::_currentCommand._outFile = $2;
-                Command::_currentCommand._errFile = $2;
+                Command::_currentCommand._errFile = strdup($2);
         }
         | GREATGREAT WORD {
                 printf("   Yacc: insert append to output \"%s\"\n", $2);
@@ -108,7 +108,7 @@ io_modifier:
         | GREATGREATAND WORD {
                 printf("   Yacc: insert append to output & error \"%s\"\n", $2);
                 Command::_currentCommand._outFile = $2;
-                Command::_currentCommand._errFile = $2;
+                Command::_currentCommand._errFile = strdup($2);
         }
         ;
 
