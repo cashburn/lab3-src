@@ -85,7 +85,7 @@ iomodifier_opt:
 		printf("   Yacc: insert output \"%s\"\n", $2);
 		Command::_currentCommand._outFile = $2;
 	}
-	| /* can be empty */
+	| iomodifier_opt
 	| LESS WORD {
                 printf("   Yacc: insert input \"%s\"\n", $2);
                 Command::_currentCommand._inFile = $2;
