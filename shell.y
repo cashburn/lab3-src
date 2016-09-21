@@ -102,6 +102,7 @@ background_opt:
         AND {
                 printf("   Yacc: insert background\n");
                 Command::_currentCommand._background = 1;
+        }
         | /*empty*/
         ;
 
