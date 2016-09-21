@@ -96,6 +96,19 @@ io_modifier:
                 printf("   Yacc: insert input \"%s\"\n", $2);
                 Command::_currentCommand._inFile = $2;
         }
+        | GREATAND {
+                printf("   Yacc: insert output & error \"%s\"\n", $2);
+                Command::_currentCommand._outFile = $2;
+                Command::_currentCommand._errFile = $2;
+        }
+        | GREATGREAT {
+                printf("   Yacc: insert append to output \"%s\"\n", $2);
+                Command::_currentCommand._outFile = $2;
+        }
+        | GREATGREATAND {
+                printf("   Yacc: insert append to output & error \"%s\"\n", $2);
+                Command::_currentCommand._outFile = $2;
+                Command::_currentCommand._errFile = $2;
         ;
 
 background_opt:

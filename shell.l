@@ -50,7 +50,13 @@ void myunputc(int c) {
                 return GREATGREAT;
         }
 
+">&"    {
+                return GREATAND;
+        }
 
+">>&"   {
+                return GREATGREATAND;
+        }
 
 
 [^ \t\n][^ \t\n]*  {
