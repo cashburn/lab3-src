@@ -88,6 +88,14 @@ iomodifier_opt:
 	| /* can be empty */ 
 	;
 
+iomodifier_opt:
+        LESS WORD {
+                printf("   Yacc: insert input \"%s\"\n", $2);
+                Command::_currentCommand._inFile = $2;
+        }
+        | 
+        ;
+
 %%
 
 void
