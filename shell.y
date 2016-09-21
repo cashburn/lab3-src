@@ -22,6 +22,7 @@
 %{
 //#define yylex yylex
 #include <stdio.h>
+#include <string.h>
 #include "command.h"
 void yyerror(const char * s);
 int yylex();
