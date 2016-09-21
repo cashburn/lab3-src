@@ -109,6 +109,7 @@ io_modifier:
                 printf("   Yacc: insert append to output & error \"%s\"\n", $2);
                 Command::_currentCommand._outFile = $2;
                 Command::_currentCommand._errFile = $2;
+        }
         ;
 
 background_opt:
