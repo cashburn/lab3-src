@@ -128,6 +128,7 @@ yyerror(const char * s)
 {
 	fprintf(stderr,"%s", s);
         Command::_currentCommand.clear();
+        Command::prompt();
 }
 
 #if 0
