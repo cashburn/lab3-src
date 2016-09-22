@@ -115,8 +115,9 @@ Command::print()
 	for ( int i = 0; i < _numOfSimpleCommands; i++ ) {
 		printf("  %-3d ", i );
 		for ( int j = 0; j < _simpleCommands[i]->_numOfArguments; j++ ) {
-			printf("\"%s\" \t\n", _simpleCommands[i]->_arguments[ j ] );
+			printf("\"%s\" \t", _simpleCommands[i]->_arguments[ j ] );
 		}
+		printf("\n");
 	}
 
 	printf( "\n\n" );
