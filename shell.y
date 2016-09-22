@@ -126,7 +126,7 @@ background_opt:
 void
 yyerror(const char * s)
 {
-	fprintf(stderr,"%s", s);
+	fprintf(stderr,"%s\n", s);
         Command::_currentCommand.clear();
         Command::_currentCommand.prompt();
 }
