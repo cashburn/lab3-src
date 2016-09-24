@@ -159,7 +159,7 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf("myshell>");
+	printf("cashell>");
 	fflush(stdout);
 }
 
