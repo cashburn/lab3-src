@@ -143,6 +143,14 @@ Command::execute()
 	print();
 
 	// Add execution here
+        int pid, status;
+
+        if (!(pid = fork())) {
+            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments[1]);
+            printf("ERROR\n");
+        }
+        printf("Started Process %d: %s\n", pid, _simpleCommands[0]->_arguments[0]);
+        //waitpid(pid, &status, 0);
 	// For every simple command fork a new process
 	// Setup i/o redirection
 	// and call exec
