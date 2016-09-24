@@ -146,7 +146,7 @@ Command::execute()
         int pid, status;
 
         if (!(pid = fork())) {
-            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments[1]);
+            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR\n");
         }
         printf("Started Process %d: %s\n", pid, _simpleCommands[0]->_arguments[0]);
