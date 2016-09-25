@@ -9,6 +9,8 @@
  *
  */
 
+#define GRN "\x1B[32m"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -167,7 +169,7 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf("cashell>");
+	printf(KGRN "cashell> ");
 	fflush(stdout);
 }
 
