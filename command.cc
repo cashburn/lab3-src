@@ -152,15 +152,17 @@ Command::execute()
         //Output File
         int outfd;
         if (_outFile) {
-
+            printf("Outfile: %s\n", _outFile);
             //Append to file
             if (_append) {
                 outfd = open(_outFile, O_WRONLY|O_APPEND);
+                printf("Append: outfd\n");
             }
 
             //If file doesn't exist, create
             if (outfd < 0) {
                 outfd = creat(_outFile, 0666);
+                printf("Outfd Created\n");
             }
         }
 
