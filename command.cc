@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <string.h>
 #include <signal.h>
 
@@ -150,7 +152,7 @@ Command::execute()
         //Redirect output
         int outfd;
         if (_outFile) {
-            outfd = creat(_outfile, 0666);
+            outfd = creat(_outFile, 0666);
         }
 
         if (outfd < 0) {
