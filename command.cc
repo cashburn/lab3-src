@@ -10,6 +10,7 @@
  */
 
 #define GRN "\x1B[32m"
+#define NRM "\x1B[0m"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -169,7 +170,7 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf(GRN "cashell> ");
+	printf(GRN "cashell>" NRM);
 	fflush(stdout);
 }
 
