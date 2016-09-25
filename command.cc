@@ -155,7 +155,7 @@ Command::execute()
 
             //Append to file
             if (_append) {
-                outfd = fopen(_outFile, "a");
+                outfd = open(_outFile, "a");
             }
 
             //If file doesn't exist, create
@@ -172,13 +172,13 @@ Command::execute()
         //Input File
         int infd;
         if (_inFile) {
-            infd = fopen(_inFile, "r");
+            infd = open(_inFile, "r");
             if (infd < 0) {
                 printf("INPUT ERROR");
             }
         }
 
-        printf("Output: %s", _outfile);
+        printf("Output: %s", _outFile);
         printf("Error: %s", _errFile);
         //Redirect
         dup2(outfd, 1);
