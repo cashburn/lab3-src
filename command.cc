@@ -164,7 +164,7 @@ Command::execute()
             }
         }
 
-        if (outfd < 0) {
+        if (outfd <= 0) {
             printf("OUTPUT ERROR");
             exit(1);
         }
@@ -173,13 +173,13 @@ Command::execute()
         int infd;
         if (_inFile) {
             infd = open(_inFile, O_RDONLY);
-            if (infd < 0) {
+            if (infd <= 0) {
                 printf("INPUT ERROR");
             }
         }
 
-        printf("Output: %s", _outFile);
-        printf("Error: %s", _errFile);
+        printf("Output: %s\n", _outFile);
+        printf("Error: %s\n", _errFile);
         //Redirect
         dup2(outfd, 1);
         close(outfd);
