@@ -162,6 +162,8 @@ Command::execute()
 
         dup2(outfd, 1);
         close(outfd);
+
+        
         
         // Don't do anything if there are no simple commands
 	if ( _numOfSimpleCommands == 0 ) {
@@ -176,6 +178,10 @@ Command::execute()
         int pid, status;
 
         if (!(pid = fork())) {
+            close(defaultin);
+            close(defaultout);
+            close(defaulterr);
+            
             execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR\n");
         }
@@ -187,6 +193,12 @@ Command::execute()
 	// and call exec
 
 	// Clear to prepare for next command
+        dup2(defaultin, 0);
+        dup2(defaultout, 1);
+        dup2(defaulterr, 2);
+        close(defaultin);
+        close(defaultout);
+        close(defaulterr);
 	clear();
 	
 	// Print new prompt
