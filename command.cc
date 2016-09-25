@@ -148,8 +148,9 @@ Command::execute()
         }*/
 
         //Redirect output
+        int outfd;
         if (_outFile) {
-            int outfd = creat(_outfile, 0666);
+            outfd = creat(_outfile, 0666);
         }
 
         if (outfd < 0) {
