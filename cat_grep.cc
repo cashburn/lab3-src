@@ -32,7 +32,7 @@ main(int argc, char **argv, char **envp)
 	// change them during redirection and we will need to restore them
 	// at the end.
 
-	int defaultin = dup( 0 );
+	 int defaultin = dup( 0 );
 	int defaultout = dup( 1 );
 	int defaulterr = dup( 2 );
 
