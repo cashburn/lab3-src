@@ -169,7 +169,7 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf(KGRN "cashell> ");
+	printf(GRN "cashell> ");
 	fflush(stdout);
 }
 
