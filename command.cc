@@ -152,17 +152,14 @@ Command::execute()
         //Output File
         int outfd;
         if (_outFile) {
-            printf("Outfile: %s\n", _outFile);
             //Append to file
             if (_append) {
                 outfd = open(_outFile, O_WRONLY|O_APPEND);
-                printf("Append: outfd\n");
             }
 
             //If file doesn't exist, create
             if (!_append || outfd <= 0) {
                 outfd = creat(_outFile, 0666);
-                printf("Outfd Created\n");
             }
         }
 
@@ -170,6 +167,8 @@ Command::execute()
             printf("OUTPUT ERROR");
             exit(1);
         }
+
+
 
         //Input File
         int infd;
@@ -180,10 +179,13 @@ Command::execute()
             }
         }
 
-        printf("Output: %s\n", _outFile);
-        printf("Error: %s\n", _errFile);
         //Redirect
-        dup2(outfd, 1);
+        if (infd)
+            dup2(infd, 0);
+        if (outfd)
+            dup2(outfd, 1);
+        if (_errFile)
+            dup2(outfd, 2);
         close(outfd);
 
         
