@@ -160,7 +160,7 @@ Command::execute()
             }
 
             //If file doesn't exist, create
-            if (outfd < 0) {
+            if (outfd <= 0) {
                 outfd = creat(_outFile, 0666);
                 printf("Outfd Created\n");
             }
