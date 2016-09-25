@@ -149,10 +149,19 @@ Command::execute()
             exit(1);
         }*/
 
-        //Redirect output
+        //Output File
         int outfd;
         if (_outFile) {
-            outfd = creat(_outFile, 0666);
+
+            //Append to file
+            if (_append) {
+                outfd = fopen(_outFile, "a");
+            }
+
+            //If file doesn't exist, create
+            if (outfd < 0) {
+                outfd = creat(_outFile, 0666);
+            }
         }
 
         if (outfd < 0) {
@@ -160,6 +169,18 @@ Command::execute()
             exit(1);
         }
 
+        //Input File
+        int infd;
+        if (_inFile) {
+            infd = fopen(_inFile, "r");
+            if (infd < 0) {
+                printf("INPUT ERROR");
+            }
+        }
+
+        printf("Output: %s", _outfile);
+        printf("Error: %s", _errFile);
+        //Redirect
         dup2(outfd, 1);
         close(outfd);
 
