@@ -170,7 +170,7 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf(GRN "cashell>" NRM);
+	printf(GRN "> $ " NRM);
 	fflush(stdout);
 }
 
