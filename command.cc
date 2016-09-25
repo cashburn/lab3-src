@@ -155,7 +155,7 @@ Command::execute()
 
             //Append to file
             if (_append) {
-                outfd = open(_outFile, "a");
+                outfd = open(_outFile, O_WRONLY|O_APPEND);
             }
 
             //If file doesn't exist, create
@@ -172,7 +172,7 @@ Command::execute()
         //Input File
         int infd;
         if (_inFile) {
-            infd = open(_inFile, "r");
+            infd = open(_inFile, O_RDONLY);
             if (infd < 0) {
                 printf("INPUT ERROR");
             }
