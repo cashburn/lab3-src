@@ -105,11 +105,13 @@ io_modifier:
         | GREATGREAT WORD {
                 printf("   Yacc: insert append to output \"%s\"\n", $2);
                 Command::_currentCommand._outFile = $2;
+                Command::_currentCommand._append = 1;
         }
         | GREATGREATAND WORD {
                 printf("   Yacc: insert append to output & error \"%s\"\n", $2);
                 Command::_currentCommand._outFile = $2;
                 Command::_currentCommand._errFile = strdup($2);
+                Command::_currentCommand._append = 1;
         }
         ;
 
