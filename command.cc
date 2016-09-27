@@ -153,7 +153,7 @@ Command::execute()
     }
 
     for (int i = 0; i < _numOfSimpleCommands; i++) {
-        if (i == 0) {
+        /*if (i == 0) {
             //Input File
             if (_inFile) {
                 infd = open(_inFile, O_RDONLY);
@@ -162,24 +162,24 @@ Command::execute()
                     return;
                 }
             }
-        }
+        }*/
 
         //Not the first command--must be piped to
-        else {
+        /*else {
             dup2(fdpipe[0], 0);
-        }
+        }*/
 
         //Not the last command--must be piped from
-        if (i < (_numOfSimpleCommands - 1)) {
+        /*if (i < (_numOfSimpleCommands - 1)) {
             if (pipe(fdpipe) == -1) {
                 printf("PIPE ERROR");
                 return;
             }
             dup2(fdpipe[1],1);
-        }
+        }*/
         
         //Last command
-        else {
+        /*else {
             //Output File
             if (_outFile) {
                 //Append to file
@@ -191,7 +191,7 @@ Command::execute()
                 if (!_append || outfd < 0) {
                     outfd = creat(_outFile, 0666);
                 }
-            }
+            }*/
 
             if (outfd < 0) {
                 printf("OUTPUT ERROR");
@@ -216,7 +216,7 @@ Command::execute()
             close(defaulterr);
             
             //Execute command
-            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
+            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR: Command not found");
             return;
         }
