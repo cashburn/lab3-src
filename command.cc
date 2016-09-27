@@ -138,6 +138,7 @@ Command::print()
 void
 Command::execute()
 {
+    print();
     //Save default input, output, error
     int defaultin = dup(0);
     int defaultout = dup(1);
