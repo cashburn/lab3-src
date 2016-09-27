@@ -210,7 +210,7 @@ Command::execute()
             execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR\n");
         }
-        printf("Started Process %d: %s\n", pid, _simpleCommands[0]->_arguments[0]);
+        //printf("Started Process %d: %s\n", pid, _simpleCommands[0]->_arguments[0]);
         if(!_background)
             waitpid(pid, &status, 0);
 	// For every simple command fork a new process
