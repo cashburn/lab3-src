@@ -220,8 +220,8 @@ Command::execute()
             //Child Process
 
             //Close unnecessary fds
-            for (int j = 0; j < 2*j; i++)
-                close(fdpipe[j]);
+            //for (int j = 0; j < 2*j; i++)
+                //close(fdpipe[j]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
