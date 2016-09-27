@@ -1,2 +1,1 @@
-ls test3* > file-list
-ls -al `cat file-list` 
+ls /none >err2 2>&1
