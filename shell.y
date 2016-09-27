@@ -87,7 +87,7 @@ io_modifier_list:
 
 io_modifier:
         GREAT WORD {
-	    if (Command::_currentCommand._outFile < 1)
+	    if (Command::_currentCommand._outFile == NULL)
                 Command::_currentCommand._outFile = $2;
             else
                 yyerror("ERROR: Ambiguous output redirect");
