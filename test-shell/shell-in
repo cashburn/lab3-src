@@ -1,1 +1,1 @@
-ls files > out1
+cat < files/aaa
