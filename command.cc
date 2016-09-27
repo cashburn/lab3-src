@@ -144,7 +144,8 @@ Command::execute()
     int defaultout = dup(1);
     int defaulterr = dup(2);
     int infd, outfd;
-    int fdpipe[2];
+    int numPipes = _numOfSimpleCommands-1;
+    int fdpipe[2*numPipes];
     int pid, status;
 
     //Don't do anything if there are no simple commands
@@ -173,16 +174,16 @@ Command::execute()
 
         //Not the first command--must be piped to
         else {
-            dup2(fdpipe[0], 0);
+            dup2(fdpipe[i-2], 0);
         }
 
         //Not the last command--must be piped from
         if (i < (_numOfSimpleCommands - 1)) {
-            if (pipe(fdpipe) == -1) {
+            if (pipe(fdpipe + i*2) == -1) {
                 printf("PIPE ERROR\n");
                 //return;
             }
-            dup2(fdpipe[1],1);
+            dup2(fdpipe[i+1],1);
         }
         
         //Last command
@@ -219,10 +220,8 @@ Command::execute()
             //Child Process
 
             //Close unnecessary fds
-            if (fdpipe[0] != 0)
-                close(fdpipe[0]);
-            if (fdpipe[1] != 0)
-                close(fdpipe[1]);
+            for (int j = 0; j < 2*j; i++)
+                close(fdpipe[j]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
@@ -235,10 +234,7 @@ Command::execute()
         }
         //fprintf(stderr, "Process %d started\n", pid);
     }
-        
-        if (fdpipe[0] != 0)
-            close(fdpipe[0]);
-        if (fdpipe[1] != 0)
+        for (int j = 0; j < 2*numPipes; j++)
             close(fdpipe[1]);
         
         if(!_background)
