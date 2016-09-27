@@ -144,6 +144,7 @@ Command::execute()
     int defaulterr = dup(2);
     int infd, outfd;
     int fdpipe[2];
+    int pid, status;
 
     //Don't do anything if there are no simple commands
     if (_numOfSimpleCommands == 0) {
