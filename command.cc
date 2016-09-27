@@ -161,6 +161,8 @@ Command::execute()
                     printf("INPUT ERROR");
                     return;
                 }
+                dup2(infd, 0);
+                close(infd);
             }
         }
 
@@ -197,6 +199,10 @@ Command::execute()
                 printf("OUTPUT ERROR");
                 return;
             }
+            dup2(outfd, 1);
+            if (_errFile)
+                dup2(outfd, 2);
+            close(outfd);
         }
 
 	// Print contents of Command data structure
