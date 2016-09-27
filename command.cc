@@ -219,6 +219,7 @@ Command::execute()
             printf("ERROR: Command not found");
             return;
         }
+    }
         if(!_background)
             waitpid(pid, &status, 0);
 
