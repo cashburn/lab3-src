@@ -163,9 +163,9 @@ Command::execute()
             }
         }
 
-        if (outfd <= 0) {
+        if (outfd < 0) {
             printf("OUTPUT ERROR");
-            exit(1);
+            return();
         }
 
 
