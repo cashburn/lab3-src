@@ -167,7 +167,7 @@ Command::execute()
                     //return;
                 }
                 dup2(infd, 0);
-                //close(infd);
+                close(infd);
             }
         }
 
@@ -235,6 +235,12 @@ Command::execute()
         }
         fprintf(stderr, "Process %d started\n", pid);
     }
+        
+        if (fdpipe[0] != 0)
+            close(fdpipe[0]);
+        if (fdpipe[1] != 0)
+            close(fdpipe[1]);
+        
         if(!_background)
             waitpid(pid, 0, 0);
 
@@ -242,10 +248,6 @@ Command::execute()
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);
-        if (fdpipe[0] != 0)
-            close(fdpipe[0]);
-        if (fdpipe[1] != 0)
-            close(fdpipe[1]);
         close(defaultin);
         close(defaultout);
         close(defaulterr);
