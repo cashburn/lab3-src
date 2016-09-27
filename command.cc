@@ -193,16 +193,16 @@ Command::execute()
                 if (!_append || outfd <= 0) {
                     outfd = creat(_outFile, 0666);
                 }
-            }
 
-            if (outfd < 0) {
-                printf("OUTPUT ERROR");
-                return;
+                if (outfd < 0) {
+                    printf("OUTPUT ERROR");
+                    return;
+                }
+                dup2(outfd, 1);
+                if (_errFile)
+                    dup2(outfd, 2);
+                close(outfd);
             }
-            dup2(outfd, 1);
-            if (_errFile)
-                dup2(outfd, 2);
-            close(outfd);
         }
 
 	// Print contents of Command data structure
