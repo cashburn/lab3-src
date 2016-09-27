@@ -235,8 +235,10 @@ Command::execute()
 void
 Command::prompt()
 {
-	fprintf(stderr, GRN "> $ " NRM);
+    if (!isatty(fileno(stdin))) {
+	printf(GRN "> $ " NRM);
 	fflush(stderr);
+    }
 }
 
 Command Command::_currentCommand;
