@@ -163,7 +163,7 @@ Command::execute()
             if (_inFile) {
                 infd = open(_inFile, O_RDONLY);
                 if (infd <= 0) {
-                    printf("INPUT ERROR");
+                    printf("INPUT ERROR\n");
                     //return;
                 }
                 dup2(infd, 0);
@@ -179,7 +179,7 @@ Command::execute()
         //Not the last command--must be piped from
         if (i < (_numOfSimpleCommands - 1)) {
             if (pipe(fdpipe) == -1) {
-                printf("PIPE ERROR");
+                printf("PIPE ERROR\n");
                 //return;
             }
             dup2(fdpipe[1],1);
@@ -200,7 +200,7 @@ Command::execute()
                 }
 
                 if (outfd < 0) {
-                    printf("OUTPUT ERROR");
+                    printf("OUTPUT ERROR\n");
                     //return;
                 }
                 dup2(outfd, 1);
@@ -229,7 +229,7 @@ Command::execute()
             
             //Execute command
             execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
-            printf("ERROR: Command not found");
+            printf("ERROR: Command not found.\n");
             //return;
         }
     }
