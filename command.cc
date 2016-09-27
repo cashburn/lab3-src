@@ -208,8 +208,10 @@ Command::execute()
             //Child Process
 
             //Close unnecessary fds
-            //close(fdpipe[0]);
-            //close(fdpipe[1]);
+            if (fdpipe[0] != 0)
+                close(fdpipe[0]);
+            if (fdpipe[1] != 0)
+                close(fdpipe[1]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
