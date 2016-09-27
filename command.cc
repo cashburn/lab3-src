@@ -203,20 +203,21 @@ Command::execute()
 	//print();
 
 	// Add execution here
-        int pid, status;
 
         if (!(pid = fork())) {
             //Child Process
 
             //Close unnecessary fds
-            close(fdpipe[0]);
-            close(fdpipe[1]);
+            if (fdpipe[0] != 0)
+                close(fdpipe[0]);
+            if (fdpipe[1] != 0)
+                close(fdpipe[1]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
             
             //Execute command
-            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
+            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR: Command not found");
             return;
         }
@@ -228,8 +229,10 @@ Command::execute()
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);
-        close(fdpipe[0]);
-        close(fdpipe[1]);
+        if (fdpipe[0] != 0)
+            close(fdpipe[0]);
+        if (fdpipe[1] != 0)
+            close(fdpipe[1]);
         close(defaultin);
         close(defaultout);
         close(defaulterr);
