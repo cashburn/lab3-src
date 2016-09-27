@@ -228,7 +228,8 @@ Command::execute()
             close(defaulterr);
             
             //Execute command
-            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
+            
+            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
             printf("ERROR: Command not found.\n");
             //return;
         }

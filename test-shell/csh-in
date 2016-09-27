@@ -1,1 +1,1 @@
-cat file1.cc | ls nonexisting > err2 2>&1
+ls /none >err2 2>&1
