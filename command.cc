@@ -235,7 +235,7 @@ Command::execute()
         }
     }
         if(!_background)
-            waitpid(pid, &status, 0);
+            waitpid(pid, 0, 0);
 
 	// Clear to prepare for next command
         dup2(defaultin, 0);
