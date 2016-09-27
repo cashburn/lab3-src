@@ -1,1 +1,1 @@
-cat < files/aaa
+cat file1.cc | grep malloc

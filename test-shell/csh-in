@@ -1,1 +1,1 @@
-cat < files/aaa
+ls /none >err2 2>&1

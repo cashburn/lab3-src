@@ -153,6 +153,10 @@ Command::execute()
     }
 
     for (int i = 0; i < _numOfSimpleCommands; i++) {
+        dup2(defaultin, 0);
+        dup2(defaultout, 1);
+        dup2(defaulterr, 2);
+        
         if (i == 0) {
             //Input File
             if (_inFile) {
