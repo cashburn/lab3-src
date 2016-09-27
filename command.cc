@@ -220,8 +220,8 @@ Command::execute()
             //Child Process
 
             //Close unnecessary fds
-            //for (int j = 0; j < 2*j; i++)
-                //close(fdpipe[j]);
+            for (int j = 0; j < 2*j; i++)
+                close(fdpipe[j]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
@@ -235,7 +235,7 @@ Command::execute()
         //fprintf(stderr, "Process %d started\n", pid);
     }
         for (int j = 0; j < 2*numPipes; j++)
-            close(fdpipe[1]);
+            close(fdpipe[j]);
         
         if(!_background)
             waitpid(pid, 0, 0);
