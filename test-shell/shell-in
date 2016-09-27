@@ -1,6 +1,1 @@
-<<<<<<< HEAD
-ls test3* > file-list 
-ls -al `cat file-list` 
-=======
-cat file1.cc | grep malloc
->>>>>>> ab768cfeeeac98eecfb29fd0c97681be810803d7
+cat < files/aaa

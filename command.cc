@@ -162,7 +162,7 @@ Command::execute()
                     return;
                 }
                 dup2(infd, 0);
-                close(infd);
+                //close(infd);
             }
         }
 
