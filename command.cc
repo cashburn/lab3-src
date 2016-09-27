@@ -197,7 +197,7 @@ Command::execute()
 	}
 
 	// Print contents of Command data structure
-	print();
+	//print();
 
 	// Add execution here
         int pid, status;
