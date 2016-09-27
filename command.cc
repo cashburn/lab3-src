@@ -218,6 +218,7 @@ Command::execute()
 	// and call exec
 
 	// Clear to prepare for next command
+        printf("\n");
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);

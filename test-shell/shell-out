@@ -1,4 +1,4 @@
-[32m> $ [0m   Yacc: insert command "cat"
-   Yacc: insert input "files/aaa"
-   Yacc: Execute command
-OUTPUT ERROR
+[32m> $ [0maaa
+aaa
+aaa
+[32m> $ [0m
