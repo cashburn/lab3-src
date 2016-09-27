@@ -1,1 +1,2 @@
-cat < files/aaa
+ls test3* > file-list
+ls -al `cat file-list` 
