@@ -1,1 +1,6 @@
+<<<<<<< HEAD
+ls test3* > file-list
+ls -al `cat file-list` 
+=======
 cat < files/aaa
+>>>>>>> ab768cfeeeac98eecfb29fd0c97681be810803d7
