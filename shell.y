@@ -87,7 +87,10 @@ io_modifier_list:
 
 io_modifier:
         GREAT WORD {
-		Command::_currentCommand._outFile = $2;
+	    if (Command::_currentCommand._outFile)
+                Command::_currentCommand._outFile = $2;
+            else
+                yyerror("ERROR: Ambiguous output redirect");
 	}
 	| LESS WORD {
                 Command::_currentCommand._inFile = $2;
