@@ -188,7 +188,7 @@ Command::execute()
                 }
 
                 //If file doesn't exist, create
-                if (!_append || outfd < 0) {
+                if (!_append || outfd <= 0) {
                     outfd = creat(_outFile, 0666);
                 }
             }
