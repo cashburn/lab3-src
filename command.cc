@@ -138,63 +138,65 @@ Command::print()
 void
 Command::execute()
 {
-	//Save default input, output, error
-        int defaultin = dup(0);
-        int defaultout = dup(1);
-        int defaulterr = dup(2);
+    //Save default input, output, error
+    int defaultin = dup(0);
+    int defaultout = dup(1);
+    int defaulterr = dup(2);
+    int infd, outfd;
+    int fdpipe[2];
 
-        /*int fdpipe[2];
-        if (pipe(fdpipe) == -1) {
-            printf("PIPE ERROR");
-            exit(1);
-        }*/
+    //Don't do anything if there are no simple commands
+    if (_numOfSimpleCommands == 0) {
+        prompt();
+        return;
+    }
 
-        //Output File
-        int outfd;
-        if (_outFile) {
-            //Append to file
-            if (_append) {
-                outfd = open(_outFile, O_WRONLY|O_APPEND);
-            }
-
-            //If file doesn't exist, create
-            if (!_append || outfd <= 0) {
-                outfd = creat(_outFile, 0666);
-            }
-        }
-
-        if (outfd < 0) {
-            printf("OUTPUT ERROR");
-            return;
-        }
-
-
-
-        //Input File
-        int infd;
-        if (_inFile) {
-            infd = open(_inFile, O_RDONLY);
-            if (infd <= 0) {
-                printf("INPUT ERROR");
+    for (int i = 0; i < _numOfSimpleCommands; i++) {
+        if (i == 0) {
+            //Input File
+            if (_inFile) {
+                infd = open(_inFile, O_RDONLY);
+                if (infd <= 0) {
+                    printf("INPUT ERROR");
+                    return;
+                }
             }
         }
 
-        //Redirect
-        if (infd)
-            dup2(infd, 0);
-        if (outfd)
-            dup2(outfd, 1);
-        if (_errFile)
-            dup2(outfd, 2);
-        close(outfd);
+        //Not the first command--must be piped to
+        else {
+            dup2(fdpipe[0], 0);
+        }
 
+        //Not the last command--must be piped from
+        if (i < (_numOfSimpleCommands - 1)) {
+            if (pipe(fdpipe) == -1) {
+                printf("PIPE ERROR");
+                return;
+            }
+            dup2(fdpipe[1],1);
+        }
         
-        
-        // Don't do anything if there are no simple commands
-	if ( _numOfSimpleCommands == 0 ) {
-		prompt();
-		return;
-	}
+        //Last command
+        else {
+            //Output File
+            if (_outFile) {
+                //Append to file
+                if (_append) {
+                    outfd = open(_outFile, O_WRONLY|O_APPEND);
+                }
+
+                //If file doesn't exist, create
+                if (!_append || outfd < 0) {
+                    outfd = creat(_outFile, 0666);
+                }
+            }
+
+            if (outfd < 0) {
+                printf("OUTPUT ERROR");
+                return;
+            }
+        }
 
 	// Print contents of Command data structure
 	//print();
@@ -203,24 +205,29 @@ Command::execute()
         int pid, status;
 
         if (!(pid = fork())) {
+            //Child Process
+
+            //Close unnecessary fds
+            close(fdpipe[0]);
+            close(fdpipe[1]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
             
-            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
-            printf("ERROR\n");
+            //Execute command
+            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
+            printf("ERROR: Command not found");
+            return;
         }
-        //printf("Started Process %d: %s\n", pid, _simpleCommands[0]->_arguments[0]);
         if(!_background)
             waitpid(pid, &status, 0);
-	// For every simple command fork a new process
-	// Setup i/o redirection
-	// and call exec
 
 	// Clear to prepare for next command
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);
+        close(fdpipe[0]);
+        close(fdpipe[1]);
         close(defaultin);
         close(defaultout);
         close(defaulterr);
