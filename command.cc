@@ -218,7 +218,6 @@ Command::execute()
 	// and call exec
 
 	// Clear to prepare for next command
-        printf("\n");
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);
@@ -236,8 +235,8 @@ Command::execute()
 void
 Command::prompt()
 {
-	printf(GRN "> $ " NRM);
-	fflush(stdout);
+	fprintf(stderr, GRN "> $ " NRM);
+	fflush(stderr);
 }
 
 Command Command::_currentCommand;
