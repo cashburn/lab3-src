@@ -203,7 +203,6 @@ Command::execute()
 	//print();
 
 	// Add execution here
-        int pid, status;
 
         if (!(pid = fork())) {
             //Child Process
