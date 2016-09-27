@@ -138,7 +138,7 @@ Command::print()
 void
 Command::execute()
 {
-    print();
+    //print();
     //Save default input, output, error
     int defaultin = dup(0);
     int defaultout = dup(1);
@@ -164,7 +164,7 @@ Command::execute()
                 infd = open(_inFile, O_RDONLY);
                 if (infd <= 0) {
                     printf("INPUT ERROR");
-                    return;
+                    //return;
                 }
                 dup2(infd, 0);
                 //close(infd);
@@ -180,7 +180,7 @@ Command::execute()
         if (i < (_numOfSimpleCommands - 1)) {
             if (pipe(fdpipe) == -1) {
                 printf("PIPE ERROR");
-                return;
+                //return;
             }
             dup2(fdpipe[1],1);
         }
@@ -201,7 +201,7 @@ Command::execute()
 
                 if (outfd < 0) {
                     printf("OUTPUT ERROR");
-                    return;
+                    //return;
                 }
                 dup2(outfd, 1);
                 if (_errFile)
@@ -230,7 +230,7 @@ Command::execute()
             //Execute command
             execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
             printf("ERROR: Command not found");
-            return;
+            //return;
         }
     }
         if(!_background)
