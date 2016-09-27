@@ -233,7 +233,7 @@ Command::execute()
             printf("ERROR: Command not found.\n");
             //return;
         }
-        printf("Process %d started\n", pid);
+        fprintf(stderr, "Process %d started\n", pid);
     }
         if(!_background)
             waitpid(pid, 0, 0);
