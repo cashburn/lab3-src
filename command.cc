@@ -214,7 +214,7 @@ Command::execute()
             
             //Not the first command--must be piped to
             if (i > 0) {
-                dup2(fdpipe[i-1], 0);
+                dup2(fdpipe[i-2], 0);
             }
 
         //Not the last command--must be piped from
