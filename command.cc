@@ -180,7 +180,7 @@ Command::execute()
 
                 
         //Last command
-        else {
+        if (i == _numOfSimpleCommands-1) {
             //Output File
             if (_outFile) {
                 //Append to file
@@ -211,10 +211,11 @@ Command::execute()
 
         if (!(pid = fork())) {
             //Child Process
+            
             //Not the first command--must be piped to
-        else {
-            dup2(fdpipe[i-2], 0);
-        }
+            if (i > 0) {
+                dup2(fdpipe[i-2], 0);
+            }
 
         //Not the last command--must be piped from
         if (i < (_numOfSimpleCommands - 1)) {
