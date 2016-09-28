@@ -223,7 +223,7 @@ Command::execute()
         }
 
             //Close unnecessary fds
-            for (int j = 0; j < 2*_numOfSimpleCommands; j++)
+            for (int j = 0; j < 2*numPipes; j++)
                 close(fdpipe[j]);
             close(defaultin);
             close(defaultout);
