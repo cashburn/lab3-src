@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 cat file1.cc | grep malloc
+=======
+cat file1.cc | grep malloc | grep char
+>>>>>>> 0340364751dc99306ba778e71612a8df35df6e35

@@ -138,12 +138,14 @@ Command::print()
 void
 Command::execute()
 {
+    //print();
     //Save default input, output, error
     int defaultin = dup(0);
     int defaultout = dup(1);
     int defaulterr = dup(2);
     int infd, outfd;
-    int fdpipe[2];
+    int numPipes = _numOfSimpleCommands-1;
+    int fdpipe[2*numPipes];
     int pid, status;
 
     //Don't do anything if there are no simple commands
@@ -152,34 +154,33 @@ Command::execute()
         return;
     }
 
+    for (int i = 0; i < numPipes; i++) {
+        if (pipe(fdpipe + i*2) < 0) {
+            fprintf(stderr, "PIPE ERROR\n");
+        }
+    }
+    
     for (int i = 0; i < _numOfSimpleCommands; i++) {
+        //dup2(defaultin, 0);
+        //dup2(defaultout, 1);
+        //dup2(defaulterr, 2);
+        
         if (i == 0) {
             //Input File
             if (_inFile) {
                 infd = open(_inFile, O_RDONLY);
                 if (infd <= 0) {
-                    printf("INPUT ERROR");
-                    return;
+                    printf("INPUT ERROR\n");
+                    //return;
                 }
+                dup2(infd, 0);
+                close(infd);
             }
         }
 
-        //Not the first command--must be piped to
-        else {
-            dup2(fdpipe[0], 0);
-        }
-
-        //Not the last command--must be piped from
-        if (i < (_numOfSimpleCommands - 1)) {
-            if (pipe(fdpipe) == -1) {
-                printf("PIPE ERROR");
-                return;
-            }
-            dup2(fdpipe[1],1);
-        }
-        
+                
         //Last command
-        else {
+        if (i == _numOfSimpleCommands-1) {
             //Output File
             if (_outFile) {
                 //Append to file
@@ -188,14 +189,18 @@ Command::execute()
                 }
 
                 //If file doesn't exist, create
-                if (!_append || outfd < 0) {
+                if (!_append || outfd <= 0) {
                     outfd = creat(_outFile, 0666);
                 }
-            }
 
-            if (outfd < 0) {
-                printf("OUTPUT ERROR");
-                return;
+                if (outfd < 0) {
+                    printf("OUTPUT ERROR\n");
+                    //return;
+                }
+                dup2(outfd, 1);
+                if (_errFile)
+                    dup2(outfd, 2);
+                close(outfd);
             }
         }
 
@@ -206,33 +211,42 @@ Command::execute()
 
         if (!(pid = fork())) {
             //Child Process
+            
+            //Not the first command--must be piped to
+            if (i > 0) {
+                dup2(fdpipe[(i*2)-2], 0);
+            }
+
+        //Not the last command--must be piped from
+        if (i < (_numOfSimpleCommands - 1)) {
+            dup2(fdpipe[(i*2)+1],1);
+        }
 
             //Close unnecessary fds
-            if (fdpipe[0] != 0)
-                close(fdpipe[0]);
-            if (fdpipe[1] != 0)
-                close(fdpipe[1]);
+            for (int j = 0; j < 2*numPipes; j++)
+                close(fdpipe[j]);
             close(defaultin);
             close(defaultout);
             close(defaulterr);
             
             //Execute command
-            execvp(_simpleCommands[0]->_arguments[0], _simpleCommands[0]->_arguments);
-            printf("ERROR: Command not found");
-            return;
+            
+            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
+            printf("ERROR: Command not found.\n");
+            //return;
         }
+        //fprintf(stderr, "Process %d started\n", pid);
     }
+        for (int j = 0; j < 2*numPipes; j++)
+            close(fdpipe[j]);
+        
         if(!_background)
-            waitpid(pid, &status, 0);
+            waitpid(pid, 0, 0);
 
 	// Clear to prepare for next command
         dup2(defaultin, 0);
         dup2(defaultout, 1);
         dup2(defaulterr, 2);
-        if (fdpipe[0] != 0)
-            close(fdpipe[0]);
-        if (fdpipe[1] != 0)
-            close(fdpipe[1]);
         close(defaultin);
         close(defaultout);
         close(defaulterr);
