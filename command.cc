@@ -161,9 +161,9 @@ Command::execute()
     }
     
     for (int i = 0; i < _numOfSimpleCommands; i++) {
-        dup2(defaultin, 0);
-        dup2(defaultout, 1);
-        dup2(defaulterr, 2);
+        //dup2(defaultin, 0);
+        //dup2(defaultout, 1);
+        //dup2(defaulterr, 2);
         
         if (i == 0) {
             //Input File
@@ -214,15 +214,11 @@ Command::execute()
             
             //Not the first command--must be piped to
             if (i > 0) {
-                dup2(fdpipe[i-2], 0);
+                dup2(fdpipe[i-1], 0);
             }
 
         //Not the last command--must be piped from
         if (i < (_numOfSimpleCommands - 1)) {
-            if (pipe(fdpipe + i*2) == -1) {
-                printf("PIPE ERROR\n");
-                //return;
-            }
             dup2(fdpipe[i+1],1);
         }
 

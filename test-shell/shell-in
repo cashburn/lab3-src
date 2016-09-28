@@ -1,1 +1,1 @@
-cat file1.cc | grep malloc | grep char
+cat file1.cc | grep malloc
