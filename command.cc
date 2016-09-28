@@ -154,6 +154,12 @@ Command::execute()
         return;
     }
 
+    for (int i = 0; i < numPipes; i++) {
+        if (pipe(fdpipe + i*2) < 0) {
+            fprintf(stderr, "PIPE ERROR\n");
+        }
+    }
+    
     for (int i = 0; i < _numOfSimpleCommands; i++) {
         dup2(defaultin, 0);
         dup2(defaultout, 1);
@@ -172,20 +178,7 @@ Command::execute()
             }
         }
 
-        //Not the first command--must be piped to
-        else {
-            dup2(fdpipe[i-2], 0);
-        }
-
-        //Not the last command--must be piped from
-        if (i < (_numOfSimpleCommands - 1)) {
-            if (pipe(fdpipe + i*2) == -1) {
-                printf("PIPE ERROR\n");
-                //return;
-            }
-            dup2(fdpipe[i+1],1);
-        }
-        
+                
         //Last command
         else {
             //Output File
@@ -218,6 +211,19 @@ Command::execute()
 
         if (!(pid = fork())) {
             //Child Process
+            //Not the first command--must be piped to
+        else {
+            dup2(fdpipe[i-2], 0);
+        }
+
+        //Not the last command--must be piped from
+        if (i < (_numOfSimpleCommands - 1)) {
+            if (pipe(fdpipe + i*2) == -1) {
+                printf("PIPE ERROR\n");
+                //return;
+            }
+            dup2(fdpipe[i+1],1);
+        }
 
             //Close unnecessary fds
             for (int j = 0; j < 2*j; i++)
