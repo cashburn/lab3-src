@@ -161,10 +161,6 @@ Command::execute()
     }
     
     for (int i = 0; i < _numOfSimpleCommands; i++) {
-        //dup2(defaultin, 0);
-        //dup2(defaultout, 1);
-        //dup2(defaulterr, 2);
-        
         if (i == 0) {
             //Input File
             if (_inFile) {
@@ -178,7 +174,6 @@ Command::execute()
             }
         }
 
-                
         //Last command
         if (i == _numOfSimpleCommands-1) {
             //Output File
@@ -207,8 +202,7 @@ Command::execute()
 	// Print contents of Command data structure
 	//print();
 
-	// Add execution here
-
+        //Fork
         if (!(pid = fork())) {
             //Child Process
             
@@ -217,23 +211,23 @@ Command::execute()
                 dup2(fdpipe[(i*2)-2], 0);
             }
 
-        //Not the last command--must be piped from
-        if (i < (_numOfSimpleCommands - 1)) {
-            dup2(fdpipe[(i*2)+1],1);
-        }
+            //Not the last command--must be piped from
+            if (i < (_numOfSimpleCommands - 1)) {
+                dup2(fdpipe[(i*2)+1],1);
+            }
 
-            //Close unnecessary fds
-            for (int j = 0; j < 2*numPipes; j++)
-                close(fdpipe[j]);
-            close(defaultin);
-            close(defaultout);
-            close(defaulterr);
-            
-            //Execute command
-            
-            execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
-            printf("ERROR: Command not found.\n");
-            //return;
+                //Close unnecessary fds
+                for (int j = 0; j < 2*numPipes; j++)
+                    close(fdpipe[j]);
+                close(defaultin);
+                close(defaultout);
+                close(defaulterr);
+                
+                //Execute command
+                
+                execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
+                printf("ERROR: Command not found.\n");
+                //return;
         }
         //fprintf(stderr, "Process %d started\n", pid);
     }
