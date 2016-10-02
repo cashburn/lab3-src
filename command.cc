@@ -158,6 +158,17 @@ Command::execute()
         exit(0);
     }
 
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
+        char * temp = *environ;
+        while (*temp != NULL) {
+            printf("%s\n", *temp);
+            temp++;
+        }
+        clear();
+        prompt();
+        return;
+    }
+    
     if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv")) {
         setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
         clear();
