@@ -265,7 +265,7 @@ SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
 
-void disp(int sig) {
+void sigIntHandler(int sig) {
    printf("Signal Caught\n\n"); 
    Command::_currentCommand.prompt();
    yyparse();
@@ -274,9 +274,9 @@ void disp(int sig) {
 main()
 {
 	struct sigaction sa;
-        sa.sa_handler = disp;
+        sa.sa_handler = sigIntHandler;
         sigemptyset(&sa.sa_mask);
-        sa.sa_flags = 0;
+        sa.sa_flags = SA_RESTART;
 
         if (sigaction(SIGINT, &sa, NULL)) {
             perror("sigaction");
