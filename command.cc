@@ -183,6 +183,13 @@ Command::execute()
         prompt();
         return;
     }
+
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "cd") && _simpleCommands[0]->_numOfArguments == 2) {
+        chdir(_simpleCommands[0]->_arguments[1]);
+        clear();
+        prompt();
+        return;
+    }
         
     
     for (int i = 0; i < numPipes; i++) {
