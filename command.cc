@@ -236,7 +236,7 @@ Command::execute()
                 
                 execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
                 printf("ERROR: Command not found.\n");
-                //return;
+                exit(1);
         }
         //fprintf(stderr, "Process %d started\n", pid);
     }
