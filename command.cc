@@ -21,7 +21,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include <signal.h>
-
 #include "command.h"
 
 SimpleCommand::SimpleCommand()
@@ -252,7 +251,7 @@ Command::execute()
 
 // Shell implementation
 
-void
+extern "C" void
 Command::prompt()
 {
     if (isatty(fileno(stdin))) {
@@ -268,7 +267,17 @@ int yyparse(void);
 
 main()
 {
-	Command::_currentCommand.prompt();
+	struct sigaction sa;
+        sa.sa_handler = prompt;
+        sigemptyset(&sa.sa_mask);
+        sa.sa_flags = 0;
+
+        if (sigaction(SIGINT, &sa, NULL)) {
+            perror("sigaction");
+            exit(2);
+        }
+
+        Command::_currentCommand.prompt();
 	yyparse();
 }
 
