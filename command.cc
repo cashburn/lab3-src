@@ -159,10 +159,11 @@ Command::execute()
     }
 
     if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
-        char * temp = environ;
-        while (*temp != NULL) {
-            printf("%s\n", *temp);
-            temp++;
+        int count = 0;
+        printf("\n");
+        while (environ[count] != NULL) {
+            printf("%s\n", environ[count]);
+            count++;
         }
         clear();
         prompt();
