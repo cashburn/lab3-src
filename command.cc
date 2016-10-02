@@ -273,7 +273,7 @@ extern "C" void Command::disp(int sig) {
 main()
 {
 	struct sigaction sa;
-        sa.sa_handler = disp;
+        sa.sa_handler = Command::_currentCommand.disp;
         sigemptyset(&sa.sa_mask);
         sa.sa_flags = 0;
 
