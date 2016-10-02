@@ -251,13 +251,17 @@ Command::execute()
 
 // Shell implementation
 
-extern "C" void
+void
 Command::prompt()
 {
     if (isatty(fileno(stdin))) {
 	printf(GRN "> $ " NRM);
 	fflush(stderr);
     }
+}
+
+extern "C" void disp(int sig) {
+    prompt();
 }
 
 Command Command::_currentCommand;
@@ -268,7 +272,7 @@ int yyparse(void);
 main()
 {
 	struct sigaction sa;
-        sa.sa_handler = prompt;
+        sa.sa_handler = disp;
         sigemptyset(&sa.sa_mask);
         sa.sa_flags = 0;
 
