@@ -265,7 +265,7 @@ SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
 
-void Command::disp(int sig) {
+void disp(int sig) {
     prompt();
     
 }
