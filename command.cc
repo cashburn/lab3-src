@@ -170,8 +170,15 @@ Command::execute()
         return;
     }
     
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv")) {
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
         setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
+        clear();
+        prompt();
+        return;
+    }
+
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "unsetenv") && _simpleCommands[0]->_numOfArguments == 2) {
+        unsetenv(_simpleCommands[0]->_arguments[1]);
         clear();
         prompt();
         return;
