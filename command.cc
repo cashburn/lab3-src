@@ -185,7 +185,7 @@ Command::execute()
     }
 
     if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
-        char * temp;
+        const char * temp;
         if (_simpleCommands[0]->_numOfArguments < 2) {
             temp = "~";
         }
