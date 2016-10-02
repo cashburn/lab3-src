@@ -267,6 +267,7 @@ int yyparse(void);
 
 extern "C" void Command::disp(int sig) {
     prompt();
+    
 }
 
 main()

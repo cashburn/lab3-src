@@ -35,6 +35,8 @@ struct Command {
 
 	static Command _currentCommand;
 	static SimpleCommand *_currentSimpleCommand;
+
+        void disp(int sig);
 };
 
 #endif
