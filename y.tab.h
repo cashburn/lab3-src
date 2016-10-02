@@ -54,8 +54,7 @@ extern int yydebug;
     GREATAND = 264,
     GREATGREAT = 265,
     GREATGREATAND = 266,
-    AND = 267,
-    EXIT = 268
+    AND = 267
   };
 #endif
 /* Tokens.  */
@@ -69,7 +68,6 @@ extern int yydebug;
 #define GREATGREAT 265
 #define GREATGREATAND 266
 #define AND 267
-#define EXIT 268
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -81,7 +79,7 @@ union YYSTYPE
 		char   *string_val;
 	
 
-#line 85 "y.tab.h" /* yacc.c:1909  */
+#line 83 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -272,7 +272,7 @@ SimpleCommand * Command::_currentSimpleCommand;
 int yyparse(void);
 
 void sigIntHandler(int sig) {
-   //printf("Signal Caught\n\n"); 
+   printf("\n"); 
    Command::_currentCommand.prompt();
    fflush(stdout);
 }
