@@ -158,7 +158,7 @@ Command::execute()
         exit(0);
     }
 
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv")) {
         setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);   
     }
         
