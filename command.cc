@@ -187,7 +187,7 @@ Command::execute()
     if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
         const char * temp;
         if (_simpleCommands[0]->_numOfArguments < 2) {
-            temp = getenv("PWD");
+            temp = getenv("HOME");
         }
         else
             temp = _simpleCommands[0]->_arguments[1];
