@@ -265,7 +265,7 @@ SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
 
-extern "C" void Command::disp(int sig) {
+void Command::disp(int sig) {
     prompt();
     
 }
