@@ -260,14 +260,14 @@ Command::prompt()
     }
 }
 
-extern "C" void disp(int sig) {
-    Command::prompt();
-}
-
 Command Command::_currentCommand;
 SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
+
+extern "C" void disp(int sig) {
+    _currentCommand::prompt();
+}
 
 main()
 {
