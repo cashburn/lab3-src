@@ -273,7 +273,7 @@ void disp(int sig) {
 main()
 {
 	struct sigaction sa;
-        sa.sa_handler = Command::_currentCommand.disp;
+        sa.sa_handler = disp;
         sigemptyset(&sa.sa_mask);
         sa.sa_flags = 0;
 
