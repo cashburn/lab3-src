@@ -58,6 +58,10 @@ void myunputc(int c) {
                 return GREATGREATAND;
         }
 
+"exit"  {
+                return EXIT;
+        }
+
 
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */

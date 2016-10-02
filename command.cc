@@ -153,6 +153,12 @@ Command::execute()
         return;
     }
 
+    if (!strcmp(_simpleCommands[0]->_arguments[0])) {
+        printf("Goodbye!\n");
+        exit(0);
+    }
+        
+    
     for (int i = 0; i < numPipes; i++) {
         if (pipe(fdpipe + i*2) < 0) {
             fprintf(stderr, "PIPE ERROR\n");
