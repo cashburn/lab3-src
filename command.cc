@@ -266,7 +266,9 @@ SimpleCommand * Command::_currentSimpleCommand;
 int yyparse(void);
 
 void disp(int sig) {
-   printf("Signal Caught\n"); 
+   printf("Signal Caught\n\n"); 
+   Command::_currentCommand.prompt();
+   yyparse();
 }
 
 main()
