@@ -184,8 +184,14 @@ Command::execute()
         return;
     }
 
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "cd") && _simpleCommands[0]->_numOfArguments == 2) {
-        chdir(_simpleCommands[0]->_arguments[1]);
+    if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
+        char * temp;
+        if (_simpleCommands[0]->_numOfArguments < 2) {
+            temp = "~";
+        }
+        else
+            temp = _simpleCommands[0]->_arguments[1]);
+        chdir(temp);
         clear();
         prompt();
         return;
