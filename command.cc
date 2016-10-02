@@ -153,50 +153,7 @@ Command::execute()
         return;
     }
 
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "exit")) {
-        printf("Goodbye!\n");
-        exit(0);
-    }
-
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
-        int count = 0;
-        printf("\n");
-        while (environ[count] != NULL) {
-            printf("%s\n", environ[count]);
-            count++;
-        }
-        clear();
-        prompt();
-        return;
-    }
-    
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
-        setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
-        clear();
-        prompt();
-        return;
-    }
-
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "unsetenv") && _simpleCommands[0]->_numOfArguments == 2) {
-        unsetenv(_simpleCommands[0]->_arguments[1]);
-        clear();
-        prompt();
-        return;
-    }
-
-    if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
-        const char * temp;
-        if (_simpleCommands[0]->_numOfArguments < 2) {
-            temp = getenv("HOME");
-        }
-        else
-            temp = _simpleCommands[0]->_arguments[1];
-        chdir(temp);
-        clear();
-        prompt();
-        return;
-    }
-        
+            
     
     for (int i = 0; i < numPipes; i++) {
         if (pipe(fdpipe + i*2) < 0) {
@@ -268,10 +225,56 @@ Command::execute()
                 close(defaulterr);
                 
                 //Execute command
-                
+               
+                if (!strcmp(_simpleCommands[0]->_arguments[0], "exit")) {
+                    printf("Goodbye!\n");
+                    exit(0);
+                }
+
+            else if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
+                int count = 0;
+                printf("\n");
+                while (environ[count] != NULL) {
+                    printf("%s\n", environ[count]);
+                    count++;
+                }
+                clear();
+                prompt();
+                return;
+            }
+            
+            else if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
+                setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
+                clear();
+                prompt();
+                return;
+            }
+
+            else if (!strcmp(_simpleCommands[0]->_arguments[0], "unsetenv") && _simpleCommands[0]->_numOfArguments == 2) {
+                unsetenv(_simpleCommands[0]->_arguments[1]);
+                clear();
+                prompt();
+                return;
+            }
+
+            else if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
+                const char * temp;
+                if (_simpleCommands[0]->_numOfArguments < 2) {
+                    temp = getenv("HOME");
+                }
+                else
+                    temp = _simpleCommands[0]->_arguments[1];
+                chdir(temp);
+                clear();
+                prompt();
+                return;
+            }
+
+            else {
                 execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
                 printf("ERROR: Command not found.\n");
                 exit(1);
+            }
         }
         //fprintf(stderr, "Process %d started\n", pid);
     }

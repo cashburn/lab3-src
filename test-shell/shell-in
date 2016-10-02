@@ -1,1 +1,3 @@
-cd notfound >& err1
+setenv C ap
+setenv D le
+echo I like ${C}p${D}
