@@ -159,7 +159,7 @@ Command::execute()
     }
 
     if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
-        char * temp = *environ;
+        char * temp = environ;
         while (*temp != NULL) {
             printf("%s\n", *temp);
             temp++;
