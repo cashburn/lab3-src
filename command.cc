@@ -267,8 +267,6 @@ int yyparse(void);
 
 void sigIntHandler(int sig) {
    printf("Signal Caught\n\n"); 
-   Command::_currentCommand.prompt();
-   yyparse();
 }
 
 main()
