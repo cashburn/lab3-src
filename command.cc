@@ -261,7 +261,7 @@ Command::prompt()
 }
 
 extern "C" void disp(int sig) {
-    prompt();
+    Command::prompt();
 }
 
 Command Command::_currentCommand;
