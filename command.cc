@@ -190,7 +190,7 @@ Command::execute()
             temp = "~";
         }
         else
-            temp = _simpleCommands[0]->_arguments[1]);
+            temp = _simpleCommands[0]->_arguments[1];
         chdir(temp);
         clear();
         prompt();
