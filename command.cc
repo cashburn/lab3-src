@@ -250,7 +250,7 @@ Command::execute()
                 
                 //Execute command
               
-                
+              printf("how about this now?\n"); 
             if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
                 int count = 0;
                 printf("\n");
