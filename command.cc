@@ -237,6 +237,7 @@ Command::execute()
             //Not the last command--must be piped from
             if (i < (_numOfSimpleCommands - 1)) {
                 dup2(fdpipe[(i*2)+1],1);
+                fprintf(stderr, "Not last command\n");
             }
 
                 //Close unnecessary fds
