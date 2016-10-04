@@ -1,3 +1,2 @@
-A=hello
-B=world
-echo ${A} ${B}
+ls test3* > file-list
+ls -al `cat file-list` 

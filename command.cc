@@ -200,6 +200,13 @@ Command::execute()
             }
         }
 
+
+        if (!strcmp(_simpleCommands[0]->_arguments[0], "exit")) {
+                    printf("Goodbye!\n");
+                    exit(0);
+        }
+
+
 	// Print contents of Command data structure
 	//print();
 
@@ -226,12 +233,8 @@ Command::execute()
                 
                 //Execute command
                
-                if (!strcmp(_simpleCommands[0]->_arguments[0], "exit")) {
-                    printf("Goodbye!\n");
-                    exit(0);
-                }
-
-            else if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
+                
+            if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
                 int count = 0;
                 printf("\n");
                 while (environ[count] != NULL) {

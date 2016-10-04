@@ -1,3 +1,2 @@
-setenv C ap
-setenv D le
-echo I like ${C}p${D}
+ls test3* > file-list 
+ls -al `cat file-list` 
