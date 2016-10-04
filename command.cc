@@ -207,6 +207,20 @@ Command::execute()
         }
 
 
+        else if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
+                const char * temp;
+                if (_simpleCommands[0]->_numOfArguments < 2) {
+                    temp = getenv("HOME");
+                }
+                else
+                    temp = _simpleCommands[0]->_arguments[1];
+                chdir(temp);
+                clear();
+                prompt();
+                return;
+            }
+
+
 	// Print contents of Command data structure
 	//print();
 
@@ -260,19 +274,7 @@ Command::execute()
                 return;
             }
 
-            else if (!strcmp(_simpleCommands[0]->_arguments[0], "cd")) {
-                const char * temp;
-                if (_simpleCommands[0]->_numOfArguments < 2) {
-                    temp = getenv("HOME");
-                }
-                else
-                    temp = _simpleCommands[0]->_arguments[1];
-                chdir(temp);
-                clear();
-                prompt();
-                return;
-            }
-
+            
             else {
                 execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
                 printf("ERROR: Command not found.\n");
