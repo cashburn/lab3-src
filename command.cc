@@ -260,7 +260,7 @@ Command::execute()
             
             else if (!strcmp(_simpleCommands[i]->_arguments[0], "setenv") && _simpleCommands[i]->_numOfArguments == 3) {
                 printf("setenv\n");
-                setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
+                setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[i]->_arguments[2], 1);
                 exit(0);
             }
 
