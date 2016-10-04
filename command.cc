@@ -237,8 +237,6 @@ Command::execute()
             //Not the last command--must be piped from
             if (i < (_numOfSimpleCommands - 1)) {
                 dup2(fdpipe[(i*2)+1],1);
-                fprintf(stderr, "Not last command\n");
-                printf("This should not print out\n");
             }
 
                 //Close unnecessary fds
@@ -250,7 +248,6 @@ Command::execute()
                 
                 //Execute command
               
-              printf("how about this now?\n"); 
             if (!strcmp(_simpleCommands[i]->_arguments[0], "printenv")) {
                 int count = 0;
                 printf("\n");
