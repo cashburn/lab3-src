@@ -322,8 +322,9 @@ void sigIntHandler(int sig) {
     fflush(stdout);
 }
 
-void sigHandler(int sig) {
-    printf("%d\n", sig);
+void sigChldHandler(int sig) {
+    printf("PID: %d\n", wait3(NULL, WNOHANG, NULL));
+
 }
 
 main()
@@ -340,7 +341,7 @@ main()
 
         if (signal (SIGINT, sigIntHandler) == SIG_IGN)
             signal (SIGINT, SIG_IGN);
-        if (signal (SIGCHLD, sigHandler) == SIG_IGN)
+        if (signal (SIGCHLD, sigChldHandler) == SIG_IGN)
             signal (SIGCHLD, SIG_IGN);
 
         Command::_currentCommand.prompt();
