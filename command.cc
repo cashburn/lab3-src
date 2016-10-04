@@ -317,9 +317,13 @@ SimpleCommand * Command::_currentSimpleCommand;
 int yyparse(void);
 
 void sigIntHandler(int sig) {
-   printf("\n"); 
-   Command::_currentCommand.prompt();
-   fflush(stdout);
+    printf("\n"); 
+    Command::_currentCommand.prompt();
+    fflush(stdout);
+}
+
+void sigHandler(int sig) {
+    printf("%d\n", sig);
 }
 
 main()
@@ -333,6 +337,11 @@ main()
             perror("sigaction");
             exit(2);
         }
+
+        if (signal (SIGINT, sigHandler) == SIG_IGN)
+            signal (SIGINT, SIG_IGN);
+        if (signal (SIGCHLD, sigHandler) == SIG_IGN)
+            signal (SIGCHLD, SIG_IGN);
 
         Command::_currentCommand.prompt();
 	yyparse();
