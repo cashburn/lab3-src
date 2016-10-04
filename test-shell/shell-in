@@ -1,2 +1,2 @@
-ls test3* > file-list 
-ls -al `cat file-list` 
+setenv aaa bbbb
+printenv
