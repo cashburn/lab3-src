@@ -214,7 +214,8 @@ Command::execute()
                 }
                 else
                     temp = _simpleCommands[0]->_arguments[1];
-                chdir(temp);
+                if (chdir(temp) < 0)
+                    printf("No such file or directory");
                 clear();
                 prompt();
                 return;
