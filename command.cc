@@ -326,8 +326,8 @@ void sigIntHandler(int sig) {
 
 void sigChldHandler(int sig) {
     int pid = wait3(NULL, WNOHANG, NULL);
-    //if (pid > 0)
-        //fprintf(stderr, "%d exited.\n", pid);
+    if (pid > 0)
+        fprintf(stderr, "%d exited.\n", pid);
 }
 
 main()

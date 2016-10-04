@@ -1,1 +1,8 @@
-cat file1.cc | ls nonexisting >& err1
+ls &
+ls &
+ls &
+ls &
+ls &
+ls &
+ls &
+sleep 5
