@@ -256,20 +256,17 @@ Command::execute()
                     printf("%s\n", environ[count]);
                     count++;
                 }
+                exit(0);
             }
             
             else if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
                 setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
-                clear();
-                prompt();
-                return;
+                exit(0);
             }
 
             else if (!strcmp(_simpleCommands[0]->_arguments[0], "unsetenv") && _simpleCommands[0]->_numOfArguments == 2) {
                 unsetenv(_simpleCommands[0]->_arguments[1]);
-                clear();
-                prompt();
-                return;
+                exit(0);
             }
 
             
