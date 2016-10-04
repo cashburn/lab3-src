@@ -328,7 +328,7 @@ void sigHandler(int sig) {
 
 main()
 {
-	struct sigaction sa;
+	/*struct sigaction sa;
         sa.sa_handler = sigIntHandler;
         sigemptyset(&sa.sa_mask);
         sa.sa_flags = SA_RESTART;
@@ -336,9 +336,9 @@ main()
         if (sigaction(SIGINT, &sa, NULL)) {
             perror("sigaction");
             exit(2);
-        }
+        }*/
 
-        if (signal (SIGINT, sigHandler) == SIG_IGN)
+        if (signal (SIGINT, sigIntHandler) == SIG_IGN)
             signal (SIGINT, SIG_IGN);
         if (signal (SIGCHLD, sigHandler) == SIG_IGN)
             signal (SIGCHLD, SIG_IGN);
