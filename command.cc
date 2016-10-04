@@ -219,7 +219,19 @@ Command::execute()
                 clear();
                 prompt();
                 return;
+        }
+
+        else if (!strcmp(_simpleCommands[i]->_arguments[0], "setenv") && _simpleCommands[i]->_numOfArguments == 3) {
+                printf("setenv\n");
+                setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[i]->_arguments[2], 1);
+                exit(0);
             }
+
+            else if (!strcmp(_simpleCommands[i]->_arguments[0], "unsetenv") && _simpleCommands[i]->_numOfArguments == 2) {
+                unsetenv(_simpleCommands[i]->_arguments[1]);
+                exit(0);
+            }
+
 
 
 	// Print contents of Command data structure
@@ -258,17 +270,7 @@ Command::execute()
                 exit(0);
             }
             
-            else if (!strcmp(_simpleCommands[i]->_arguments[0], "setenv") && _simpleCommands[i]->_numOfArguments == 3) {
-                printf("setenv\n");
-                setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[i]->_arguments[2], 1);
-                exit(0);
-            }
-
-            else if (!strcmp(_simpleCommands[i]->_arguments[0], "unsetenv") && _simpleCommands[i]->_numOfArguments == 2) {
-                unsetenv(_simpleCommands[i]->_arguments[1]);
-                exit(0);
-            }
-
+            
             
             else {
                 execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
