@@ -325,7 +325,7 @@ void sigIntHandler(int sig) {
 void sigChldHandler(int sig) {
     int pid = wait3(NULL, WNOHANG, NULL);
     if (pid > 0)
-        printf("PID: %d\n", wait3(NULL, WNOHANG, NULL));
+        printf("PID: %d\n", pid);
 }
 
 main()
