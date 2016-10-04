@@ -251,7 +251,7 @@ Command::execute()
                 //Execute command
               
               printf("how about this now?\n"); 
-            if (!strcmp(_simpleCommands[0]->_arguments[0], "printenv")) {
+            if (!strcmp(_simpleCommands[i]->_arguments[0], "printenv")) {
                 int count = 0;
                 printf("\n");
                 while (environ[count] != NULL) {
@@ -261,13 +261,13 @@ Command::execute()
                 exit(0);
             }
             
-            else if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
-                setenv(_simpleCommands[0]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
+            else if (!strcmp(_simpleCommands[i]->_arguments[0], "setenv") && _simpleCommands[i]->_numOfArguments == 3) {
+                setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[0]->_arguments[2], 1);
                 exit(0);
             }
 
-            else if (!strcmp(_simpleCommands[0]->_arguments[0], "unsetenv") && _simpleCommands[0]->_numOfArguments == 2) {
-                unsetenv(_simpleCommands[0]->_arguments[1]);
+            else if (!strcmp(_simpleCommands[i]->_arguments[0], "unsetenv") && _simpleCommands[i]->_numOfArguments == 2) {
+                unsetenv(_simpleCommands[i]->_arguments[1]);
                 exit(0);
             }
 
