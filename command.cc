@@ -224,12 +224,16 @@ Command::execute()
         else if (!strcmp(_simpleCommands[i]->_arguments[0], "setenv") && _simpleCommands[i]->_numOfArguments == 3) {
                 printf("setenv\n");
                 setenv(_simpleCommands[i]->_arguments[1], _simpleCommands[i]->_arguments[2], 1);
-                exit(0);
+                clear();
+                prompt();
+                return;
             }
 
             else if (!strcmp(_simpleCommands[i]->_arguments[0], "unsetenv") && _simpleCommands[i]->_numOfArguments == 2) {
                 unsetenv(_simpleCommands[i]->_arguments[1]);
-                exit(0);
+                clear();
+                prompt();
+                return;
             }
 
 
