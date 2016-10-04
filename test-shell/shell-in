@@ -1,1 +1,2 @@
-cd notfound >& err1
+ls test3* > file-list 
+ls -al `cat file-list` 

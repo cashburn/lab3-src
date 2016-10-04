@@ -256,9 +256,7 @@ Command::execute()
                     printf("%s\n", environ[count]);
                     count++;
                 }
-                clear();
-                prompt();
-                return;
+                exit(0);
             }
             
             else if (!strcmp(_simpleCommands[0]->_arguments[0], "setenv") && _simpleCommands[0]->_numOfArguments == 3) {
