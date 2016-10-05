@@ -70,7 +70,7 @@ void myunputc(int c) {
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
 		yylval.string_val = strdup(yytext);
-                printf("Word: %s", yytext);
+                printf("Word: %s\n", yytext);
 		return WORD;
 	}
 
