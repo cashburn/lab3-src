@@ -31,8 +31,9 @@ void myunputc(int c) {
      	}
         
 [\\].    {
+                printf(yytext);
                 
-		yylval.string_val = strdup(yytext+sizeof(char));
+		yylval.string_val = strdup(yytext);
                 return ESCAPE;
         }
 
