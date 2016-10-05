@@ -30,7 +30,7 @@ void myunputc(int c) {
 		/* Discard spaces and tabs */
      	}
         
-[\\].    {
+\\.     {
                 printf(yytext);
                 
 		yylval.string_val = strdup(yytext);
