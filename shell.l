@@ -28,7 +28,13 @@ void myunputc(int c) {
 
 [ \t] 	{
 		/* Discard spaces and tabs */
-     	}	
+     	}
+        
+[\].    {
+                
+		yylval.string_val = strdup(yytext);
+                return ESCAPE;
+        }
 
 ">" 	{
 		return GREAT;
