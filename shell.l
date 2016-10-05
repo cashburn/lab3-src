@@ -32,7 +32,7 @@ void myunputc(int c) {
         
 [\\].    {
                 
-		yylval.string_val = strdup(yytext);
+		yylval.string_val = strdup(yytext+sizeof(char));
                 return ESCAPE;
         }
 
