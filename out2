@@ -1,0 +1,40 @@
+
+
+              COMMAND TABLE                
+
+  #   Simple Commands
+  --- ----------------------------------------------------------
+  0   "ls" 	
+
+
+  Output       Input        Error        Background
+  ------------ ------------ ------------ ------------
+  out2         default      default      NO          
+
+
+cat_grep
+cat_grep.cc
+command.cc
+command.h
+command.o
+csh-in
+csh-out
+ctrl-c
+ctrl-c.cc
+lex.yy.c
+lex.yy.o
+Makefile
+out
+out2
+outfile
+regular
+regular.cc
+shell
+shell-in
+shell.l
+shell-out
+shell.y
+test-shell
+y.tab.c
+y.tab.h
+y.tab.o
