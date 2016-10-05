@@ -22,6 +22,14 @@ void myunputc(int c) {
 
 %%
 
+\\.     {
+                printf(yytext);
+		yylval.string_val = strdup(yytext);
+                return ESCAPE;
+        }
+
+
+
 \n 	{
 		return NEWLINE;
 	}
@@ -30,13 +38,6 @@ void myunputc(int c) {
 		/* Discard spaces and tabs */
      	}
         
-\\.     {
-                printf(yytext);
-                
-		yylval.string_val = strdup(yytext);
-                return ESCAPE;
-        }
-
 ">" 	{
 		return GREAT;
 	}
