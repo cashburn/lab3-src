@@ -22,7 +22,7 @@ void myunputc(int c) {
 
 %%
 
-\\.     {
+.*\\..*     {
                 printf("Escaped: %s\n", yytext+sizeof(char));
 		yylval.string_val = strdup(yytext);
                 return ESCAPE;
