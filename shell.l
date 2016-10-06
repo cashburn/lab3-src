@@ -29,14 +29,6 @@ void myunputc(int c) {
                 BEGIN QUOTE;
         }
 
-<QUOTE>.*   {
-                yymore();
-            }
-
-<QUOTE>\"   {
-                printf("The quoted string: %s\n", yytext);
-                BEGIN 0;
-            }
 
 \n 	{
 		return NEWLINE;
@@ -86,3 +78,13 @@ void myunputc(int c) {
 		return WORD;
 	}
 
+<QUOTE> {
+    \"      {
+                printf("The quoted string: %s\n", yytext);
+                BEGIN(0);
+            }
+    
+    .*      {
+                yymore();
+            }
+        }
