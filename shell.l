@@ -14,6 +14,21 @@
 
 static  void yyunput (int c,char *buf_ptr  );
 
+char * strrep(char * str, char * orig, char * rep) {
+    int len = strlen(orig);
+    static char buffer[len];
+    char * p;
+
+    if (!(p = strstr(str, orig)))
+        return str;
+
+    strncpy(buffer, str, p-str);
+    buffer[p-str] = '\0';
+    sprintf(buffer+(p-str), "%s%s", rep, p+len);
+
+    return buffer;
+}
+
 void myunputc(int c) {
     unput(c);
 }
@@ -21,13 +36,6 @@ void myunputc(int c) {
 %}
 
 %%
-
-.*\\..*     {
-                printf("Escaped: %s\n", yytext+sizeof(char));
-		yylval.string_val = strdup(yytext);
-                return ESCAPE;
-        }
-
 
 
 \n 	{
@@ -69,7 +77,7 @@ void myunputc(int c) {
 
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
-		yylval.string_val = strdup(yytext);
+                yylval.string_val = strdup(strrep(yytext, "\\", ""));
                 printf("Word: %s\n", yytext);
 		return WORD;
 	}
