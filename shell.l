@@ -11,6 +11,7 @@
 
 #include <string.h>
 #include "y.tab.h"
+#define MAX_STR_CONST 4096
 
 static  void yyunput (int c,char *buf_ptr  );
 
@@ -23,10 +24,13 @@ void myunputc(int c) {
 %x QUOTE
 
 %%
+char string_buf[MAX_STR_CONST];
+char * string_buf_ptr;
 
-"\""      {
+\"      {
                 //yymore();
-                BEGIN QUOTE;
+                string_buf_ptr = string_buf;
+                BEGIN(QUOTE);
         }
 
 
@@ -79,10 +83,13 @@ void myunputc(int c) {
 	}
 
 <QUOTE>\"      {
-                printf("The quoted string: %s\n", yytext);
+                string_buf_ptr = '\0';
+                printf("The quoted string: %s\n", string_buf);
                 BEGIN(0);
             }
     
-<QUOTE>.*      {
-                yymore();
+<QUOTE>[^\\\n\"]+      {
+                char * yptf = yytext;
+                while (*yptr)
+                    *string_buf_ptr++ = *yptr++;
             }
