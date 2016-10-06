@@ -14,7 +14,7 @@
 
 static  void yyunput (int c,char *buf_ptr  );
 
-const char * strrep(char * str, char * orig, char * rep) {
+char * strrep(char * str, char * orig, char * rep) {
     int len = strlen(orig);
     static char buffer[len];
     char * p;
