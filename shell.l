@@ -19,29 +19,6 @@ char * string_buf_ptr;
 
 static  void yyunput (int c,char *buf_ptr  );
 
-bool replace(std::string& str, const std::string& from, const std::string& to) {
-        size_t start_pos = str.find(from);
-            if(start_pos == std::string::npos)
-                        return false;
-                            str.replace(start_pos, from.length(), to);
-                                return true;
-}
-
-/*char * strrep(char * str, char * orig, char * rep) {
-    int len = strlen(orig);
-    char buffer[len];
-    char * p;
-
-    if (!(p = strstr(str, orig)))
-        return str;
-
-    strncpy(buffer, str, p-str);
-    buffer[p-str] = '\0';
-    sprintf(buffer+(p-str), "%s%s", rep, p+len);
-
-    return buffer;
-}*/
-
 void myunputc(int c) {
     unput(c);
 }
@@ -52,15 +29,11 @@ void myunputc(int c) {
 
 %%
 
-<<<<<<< HEAD
 \"      {
                 //yymore();
                 string_buf_ptr = string_buf;
                 BEGIN(QUOTE);
         }
-
-=======
->>>>>>> 38aa9c3b15a0f5547c9a87545b02ea443c626e53
 
 \n 	{
 		return NEWLINE;
@@ -68,7 +41,6 @@ void myunputc(int c) {
 
 [ \t] 	{
 		/* Discard spaces and tabs */
-<<<<<<< HEAD
      	}	
 
 "~"     {
@@ -76,10 +48,6 @@ void myunputc(int c) {
                 return WORD;
         }
 
-=======
-     	}
-        
->>>>>>> 38aa9c3b15a0f5547c9a87545b02ea443c626e53
 ">" 	{
 		return GREAT;
 	}
