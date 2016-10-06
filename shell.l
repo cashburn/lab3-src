@@ -31,7 +31,7 @@ void myunputc(int c) {
 
 %%
 
-\".*      {
+\"      {
                 //yymore();
                 string_buf_ptr = string_buf;
                 BEGIN(QUOTE);
