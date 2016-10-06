@@ -14,15 +14,12 @@
 #include "y.tab.h"
 #define MAX_STR_CONST 4096
 
-<<<<<<< HEAD
 static  void yyunput (int c,char *buf_ptr  );
 
-=======
 char string_buf[MAX_STR_CONST];
 char * string_buf_ptr;
 
 static  void yyunput (int c,char *buf_ptr  );
->>>>>>> f4de02d4ade865535ce045b98159ed788a0405fe
 
 void myunputc(int c) {
     unput(c);
