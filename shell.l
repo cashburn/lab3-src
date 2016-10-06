@@ -90,7 +90,7 @@ void myunputc(int c) {
             }
     
 <QUOTE>[^\\\n\"]+      {
-                char * yptf = yytext;
+                char * ypt = yytext;
                 while (*yptr)
                     *string_buf_ptr++ = *yptr++;
             }
