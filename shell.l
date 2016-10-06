@@ -20,7 +20,23 @@ void myunputc(int c) {
 
 %}
 
+%x QUOTE
+
 %%
+
+\"      {
+                //yymore();
+                BEGIN QUOTE;
+        }
+
+<QUOTE>.*   {
+                yymore();
+            }
+
+<QUOTE>\"   {
+                printf("The quoted string: %s\n", yytext);
+                BEGIN 0;
+            }
 
 \n 	{
 		return NEWLINE;
@@ -31,7 +47,6 @@ void myunputc(int c) {
      	}	
 
 "~"     {
-                
                 yylval.string_val = strdup(getenv("HOME"));
                 return WORD;
         }
