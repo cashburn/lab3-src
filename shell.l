@@ -15,6 +15,14 @@
 
 static  void yyunput (int c,char *buf_ptr  );
 
+bool replace(std::string& str, const std::string& from, const std::string& to) {
+        size_t start_pos = str.find(from);
+            if(start_pos == std::string::npos)
+                        return false;
+                            str.replace(start_pos, from.length(), to);
+                                return true;
+}
+
 /*char * strrep(char * str, char * orig, char * rep) {
     int len = strlen(orig);
     char buffer[len];
@@ -79,7 +87,7 @@ void myunputc(int c) {
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
-                yylval.string_val = strdup(string::replace(yytext, "\\", ""));
+                yylval.string_val = strdup(yytext);
                 printf("Word: %s\n", yytext);
 		return WORD;
 	}
