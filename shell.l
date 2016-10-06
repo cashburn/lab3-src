@@ -90,7 +90,9 @@ void myunputc(int c) {
 <QUOTE>\"      {
                 string_buf_ptr = '\0';
                 printf("The quoted string: %s\n", string_buf);
+                yylval.string_val = strdup(yytext);
                 BEGIN(0);
+                return WORD;
             }
     
 <QUOTE>[^\\\n\"]+      {
