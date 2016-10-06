@@ -86,4 +86,3 @@ void myunputc(int c) {
 <QUOTE>.*      {
                 yymore();
             }
-        }
