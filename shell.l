@@ -9,7 +9,8 @@
 
 %{
 
-#include <string.h>
+#include <iostream>
+#include <string>
 #include "y.tab.h"
 
 static  void yyunput (int c,char *buf_ptr  );
