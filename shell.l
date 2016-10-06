@@ -14,7 +14,7 @@
 
 static  void yyunput (int c,char *buf_ptr  );
 
-char * strrep(char * str, char * orig, char * rep) {
+const char * strrep(char * str, char * orig, char * rep) {
     int len = strlen(orig);
     static char buffer[len];
     char * p;
@@ -77,6 +77,7 @@ void myunputc(int c) {
 
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
+                
                 yylval.string_val = strdup(strrep(yytext, "\\", ""));
                 printf("Word: %s\n", yytext);
 		return WORD;
