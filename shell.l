@@ -16,7 +16,7 @@ static  void yyunput (int c,char *buf_ptr  );
 
 char * strrep(char * str, char * orig, char * rep) {
     int len = strlen(orig);
-    static char buffer[len];
+    char buffer[len];
     char * p;
 
     if (!(p = strstr(str, orig)))
