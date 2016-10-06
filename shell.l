@@ -78,13 +78,12 @@ void myunputc(int c) {
 		return WORD;
 	}
 
-<QUOTE> {
-    \"      {
+<QUOTE>\"      {
                 printf("The quoted string: %s\n", yytext);
                 BEGIN(0);
             }
     
-    .*      {
+<QUOTE>.*      {
                 yymore();
             }
         }
