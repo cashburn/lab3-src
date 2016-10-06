@@ -32,7 +32,7 @@ void myunputc(int c) {
 
 "~"     {
                 
-                yylval.string_val = strdup(getenv(HOME));
+                yylval.string_val = strdup(getenv("HOME"));
                 return WORD;
         }
 
