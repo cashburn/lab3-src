@@ -24,7 +24,7 @@ void myunputc(int c) {
 
 %%
 
-\".*      {
+"\""      {
                 //yymore();
                 BEGIN QUOTE;
         }
