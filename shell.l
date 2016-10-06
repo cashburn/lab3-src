@@ -87,6 +87,9 @@ void myunputc(int c) {
 [^ \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
+                char * tmp = strdup(yytext);
+                replace(tmp, "\\", "");
+                
                 yylval.string_val = strdup(yytext);
                 printf("Word: %s\n", yytext);
 		return WORD;
