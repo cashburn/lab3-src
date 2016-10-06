@@ -12,9 +12,17 @@
 #include <iostream>
 #include <string>
 #include "y.tab.h"
+#define MAX_STR_CONST 4096
 
+<<<<<<< HEAD
 static  void yyunput (int c,char *buf_ptr  );
 
+=======
+char string_buf[MAX_STR_CONST];
+char * string_buf_ptr;
+
+static  void yyunput (int c,char *buf_ptr  );
+>>>>>>> f4de02d4ade865535ce045b98159ed788a0405fe
 
 void myunputc(int c) {
     unput(c);
@@ -22,8 +30,15 @@ void myunputc(int c) {
 
 %}
 
+%x QUOTE
+
 %%
 
+\"      {
+                //yymore();
+                string_buf_ptr = string_buf;
+                BEGIN(QUOTE);
+        }
 
 \n 	{
 		return NEWLINE;
@@ -31,8 +46,13 @@ void myunputc(int c) {
 
 [ \t] 	{
 		/* Discard spaces and tabs */
-     	}
-        
+     	}	
+
+"~"     {
+                yylval.string_val = strdup(getenv("HOME"));
+                return WORD;
+        }
+
 ">" 	{
 		return GREAT;
 	}
@@ -70,3 +90,14 @@ void myunputc(int c) {
 		return WORD;
 	}
 
+<QUOTE>\"      {
+                string_buf_ptr = '\0';
+                printf("The quoted string: %s\n", string_buf);
+                BEGIN(0);
+            }
+    
+<QUOTE>[^\\\n\"]+      {
+                char * yptr = yytext;
+                while (*yptr)
+                    *string_buf_ptr++ = *yptr++;
+            }
