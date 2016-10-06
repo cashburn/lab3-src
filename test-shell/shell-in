@@ -1,2 +1,8 @@
-ls test3* > file-list 
-ls -al `cat file-list` 
+ls &
+ls &
+ls &
+ls &
+ls &
+ls &
+ls &
+sleep 5
