@@ -235,6 +235,15 @@ Command::execute()
                 return;
             }
 
+            else if (!strcmp(_simpleCommands[i]->_arguments[0], "readlink")) {
+                char tmp[4096];
+                readlink("/proc/self/exe", tmp, 4096);
+                printf("%s", tmp);
+                clear();
+                prompt();
+                return;
+            }
+
 
 
 	// Print contents of Command data structure
