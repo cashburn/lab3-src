@@ -19,6 +19,9 @@ static  void yyunput (int c,char *buf_ptr  );
 char string_buf[MAX_STR_CONST];
 char * string_buf_ptr;
 
+char subsh_buf[MAX_STR_CONST];
+char * subsh_buf_ptr;
+
 static  void yyunput (int c,char *buf_ptr  );
 
 void myunputc(int c) {
@@ -28,6 +31,7 @@ void myunputc(int c) {
 %}
 
 %x QUOTE
+%x BACKTICK
 
 %%
 
@@ -35,6 +39,10 @@ void myunputc(int c) {
                 //yymore();
                 string_buf_ptr = string_buf;
                 BEGIN(QUOTE);
+        }
+`       {
+                subsh_buf_ptr = subsh_buf;
+                BEGIN(BACKTICK);
         }
 
 \n 	{
@@ -95,8 +103,20 @@ void myunputc(int c) {
                 return WORD;
             }
     
-<QUOTE>[^\\\n\"]+      {
+<QUOTE>[^\\\n\"]+       {
                 char * yptr = yytext;
                 while (*yptr)
                     *string_buf_ptr++ = *yptr++;
-            }
+                        }
+
+<BACKTICK>[^\\\n`]+     {
+                char * yptr = yytext;
+                while (*yptr)
+                    *subsh_buf_ptr++ = *yptr++;
+                        }
+<BACKTICK>`     {
+                subsh_buf_ptr = '\0';
+                printf("Command: %s\n", string_buf);
+                BEGIN(0);
+                yylval.string_val = "";
+                return WORD;
