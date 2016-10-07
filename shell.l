@@ -35,6 +35,11 @@ void myunputc(int c) {
 
 %%
 
+\\.    {
+                yylval.string_val = strdup(yytext+sizeof(char));
+                return WORD;
+        }
+
 \"      {
                 //yymore();
                 string_buf_ptr = string_buf;
