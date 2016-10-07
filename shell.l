@@ -36,7 +36,8 @@ void myunputc(int c) {
 %%
 
 \\.    {
-                yylval.string_val = strdup(yytext+sizeof(char));
+                yytext = yytext+sizeof(char);
+                yymore();
         }
 
 \"      {
