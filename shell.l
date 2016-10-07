@@ -117,7 +117,15 @@ void myunputc(int c) {
 <BACKTICK>`     {
                 subsh_buf_ptr = '\0';
                 printf("Command: %s\n", string_buf);
+                char tmp[MAX_STR_CONST];
+                readlink("/proc/self/exe", tmp, MAX_STR_CONST);
+                int pid;
+                if (!(pid = fork())) {
+                    //Child Process
+                     execvp(tmp, NULL);
+                     exit(1);
+                }
+                
                 BEGIN(0);
-                yylval.string_val = "";
                 return WORD;
                 }
