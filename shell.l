@@ -35,10 +35,6 @@ void myunputc(int c) {
 
 %%
 
-\\.$    {
-                yytext = yytext+sizeof(char);
-        }
-
 \\.     {
                 yytext = yytext+sizeof(char);
                 yymore();
