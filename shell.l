@@ -33,7 +33,7 @@ char * rmbackslash(char * s) {
     char * dest = (char *) malloc(sizeof(s));
     char * dest1 = dest;
     while (*src) {
-        if (*dest1 != '\\') {
+        if (*src != '\\') {
             *dest1 = *src;
             dest1++;
         }
