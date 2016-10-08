@@ -28,6 +28,21 @@ void myunputc(int c) {
     unput(c);
 }
 
+char * rmbackslash(char * s) {
+    char * src = s;
+    char * dest = (char *) malloc(sizeof(s));
+    char * dest1 = dest;
+    while (*src) {
+        if (*dest1 != '\') {
+            *dest1 = *src;
+            dest1++;
+        }
+        src++;
+    }
+    *dest1 = '\0';
+    return dest;
+}
+
 %}
 
 %x QUOTE
@@ -90,7 +105,9 @@ void myunputc(int c) {
 [^`" \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
-                yylval.string_val = strdup(yytext);
+                yylval.string_val = rmbackslash(yytext);
+                if (strlen(yytext) > strlen(yylval.string_val))
+                    yymore();
                 //printf("Word: %s\n", yytext);
 		return WORD;
 	}
