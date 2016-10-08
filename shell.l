@@ -35,11 +35,6 @@ void myunputc(int c) {
 
 %%
 
-\\.     {
-                yytext = yytext+sizeof(char);
-                yymore();
-        }
-
 \"      {
                 //yymore();
                 string_buf_ptr = string_buf;
@@ -92,7 +87,7 @@ void myunputc(int c) {
         }
 
 
-[^`\\" \t\n][^\\ \t\n]*  {
+[^`" \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
                 yylval.string_val = strdup(yytext);
