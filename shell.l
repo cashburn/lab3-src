@@ -22,6 +22,8 @@ char * string_buf_ptr;
 char subsh_buf[MAX_STR_CONST];
 char * subsh_buf_ptr;
 
+char tmpchar;
+
 static  void yyunput (int c,char *buf_ptr  );
 
 void myunputc(int c) {
@@ -47,8 +49,13 @@ char * rmbackslash(char * s) {
 
 %x QUOTE
 %x BACKTICK
+%x BACK
 
 %%
+
+\\      {
+                BEGIN(BACK);
+        }
 
 \"      {
                 //yymore();
@@ -125,6 +132,13 @@ char * rmbackslash(char * s) {
                 while (*yptr)
                     *string_buf_ptr++ = *yptr++;
                         }
+
+<QUOTE>\\n  *string_buf_ptr++ = '\n';
+<QUOTE>\\t  *string_buf_ptr++ = '\t';
+<QUOTE>\\r  *string_buf_ptr++ = '\r';
+<QUOTE>\\b  *string_buf_ptr++ = '\b';
+<QUOTE>\\f  *string_buf_ptr++ = '\f';
+<QUOTE>\\(.|\n)  *string_buf_ptr++ = yytext[1];
 
 <BACKTICK>[^\\\n`]+     {
                 char * yptr = yytext;
