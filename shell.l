@@ -115,6 +115,7 @@ char * rmbackslash(char * s) {
                 yylval.string_val = rmbackslash(yytext);
                 if (strlen(yytext) > strlen(yylval.string_val))
                     yymore();
+                else
                 //printf("Word: %s\n", yytext);
 		return WORD;
 	}
