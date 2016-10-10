@@ -57,7 +57,6 @@ char * rmbackslash(char * s) {
 %%
 
 \\      {
-                esc_buf_ptr = esc_buf;
                 BEGIN(BACK);
         }
 
@@ -113,7 +112,7 @@ char * rmbackslash(char * s) {
         }
 
 
-[^`" \t\n][^ \t\n]*  {
+[^`" \\\t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
                 
