@@ -155,6 +155,7 @@ char * rmbackslash(char * s) {
 
 <BACK>.\n   {
                     if (esc_buf_ptr != esc_buf) {
+                        *esc_buf_ptr = *yytext;
                         yylval.string_val = strdup(esc_buf);
                         unput('\n');
                         BEGIN(0);
