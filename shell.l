@@ -150,7 +150,9 @@ char * rmbackslash(char * s) {
             }
 
 <BACK>.     {
-                    esc_buf_ptr++ = *yytext;
+                    char * yptr = yytext;
+                    *esc_buf_ptr = *yptr;
+                    esc_buf_ptr++;
                     BEGIN(0);
             }
 
