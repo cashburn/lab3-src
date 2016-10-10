@@ -25,6 +25,8 @@ char * subsh_buf_ptr;
 char esc_buf[MAX_STR_CONST];
 char * esc_buf_ptr;
 
+int backptr;
+
 static  void yyunput (int c,char *buf_ptr  );
 
 void myunputc(int c) {
@@ -116,20 +118,24 @@ char * rmbackslash(char * s) {
                 
                 
                 yylval.string_val = rmbackslash(yytext);
-                char * yptr = yytext;
+                char * yptr = yytext + backptr*sizeof(char);
                 int done = 0;
+                int count = 0;
                 while (*yptr) {
                     if (*yptr == '\\') {
                         BEGIN(BACK);
                         yymore();
                         done = 1;
+                        backptr = count;
                     }
                     yptr++;
+                    count++;
                 }
 
                 if (!done) {
                     yylval.string_val = rmbackslash(yytext);
                 //printf("Word: %s\n", yytext);
+                    backptr = 0;
 		    return WORD;
                 }
 	}
@@ -138,7 +144,7 @@ char * rmbackslash(char * s) {
                     BEGIN(0);
                     yymore();
                     yylval.string_val = rmbackslash(yytext);
-                    return WORD;
+                    //return WORD;
             }
 
 <QUOTE>\"      {
