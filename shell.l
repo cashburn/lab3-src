@@ -22,7 +22,8 @@ char * string_buf_ptr;
 char subsh_buf[MAX_STR_CONST];
 char * subsh_buf_ptr;
 
-char tmpchar;
+char esc_buf[MAX_STR_CONST];
+char * esc_buf_ptr;
 
 static  void yyunput (int c,char *buf_ptr  );
 
@@ -54,6 +55,7 @@ char * rmbackslash(char * s) {
 %%
 
 \\      {
+                esc_buf_ptr = esc_buf;
                 BEGIN(BACK);
         }
 
@@ -112,13 +114,29 @@ char * rmbackslash(char * s) {
 [^`" \t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
+                
                 yylval.string_val = rmbackslash(yytext);
-                if (strlen(yytext) > strlen(yylval.string_val))
-                    yymore();
-                else
+                char * yptr = yytext;
+                while (*yptr) {
+                    if (*yptr != '\\') {
+                        esc_buf_ptr++;
+                        yptr++;
+                    }
+                    else {
+                        BEGIN(BACK);
+                        yymore();
+                    }
+                yylval.string_val = rmbackslash(yytext);
                 //printf("Word: %s\n", yytext);
 		return WORD;
 	}
+
+<BACK>.     {
+                    BEGIN(0);
+                    yymore();
+                    yylval.string_val = rmbackslash(yytext);
+                    return WORD;
+            }
 
 <QUOTE>\"      {
                 string_buf_ptr = '\0';
