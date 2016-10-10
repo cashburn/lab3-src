@@ -118,14 +118,11 @@ char * rmbackslash(char * s) {
                 yylval.string_val = rmbackslash(yytext);
                 char * yptr = yytext;
                 while (*yptr) {
-                    if (*yptr != '\\') {
-                        esc_buf_ptr++;
-                        yptr++;
-                    }
-                    else {
+                    if (*yptr == '\\') {
                         BEGIN(BACK);
                         yymore();
                     }
+                    yptr++;
                 }
                 yylval.string_val = rmbackslash(yytext);
                 //printf("Word: %s\n", yytext);
