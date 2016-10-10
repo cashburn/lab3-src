@@ -162,7 +162,7 @@ char * rmbackslash(char * s) {
                             esc_buf_ptr++;
                         }
                         esc_buf_ptr = esc_buf;
-                        unput('\n');
+                        yyless(1);
                         BEGIN(0);
                         return WORD;
             }
