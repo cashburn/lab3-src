@@ -137,8 +137,8 @@ char * rmbackslash(char * s) {
 <BACK>.     {
                     BEGIN(0);
                     yymore();
-                    //yylval.string_val = rmbackslash(yytext);
-                    //return WORD;
+                    yylval.string_val = rmbackslash(yytext);
+                    return WORD;
             }
 
 <QUOTE>\"      {
