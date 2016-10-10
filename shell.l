@@ -125,7 +125,7 @@ char * rmbackslash(char * s) {
                     if (*yptr == '\\') {
                         BEGIN(BACK);
                         done = 0;
-                        yyless(count);
+                        yyless(count-1);
                         break;
                     }
                     else
