@@ -153,7 +153,7 @@ char * rmbackslash(char * s) {
                 }
 	}
 
-<BACK>.\n   {
+<BACK>.[ \t\n]   {
                         *esc_buf_ptr = *yytext;
                         yylval.string_val = strdup(esc_buf);
                         esc_buf_ptr = esc_buf;
