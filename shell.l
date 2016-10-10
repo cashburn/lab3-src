@@ -115,23 +115,24 @@ char * rmbackslash(char * s) {
 [^`" \\\t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
                 
-                
                 yylval.string_val = rmbackslash(yytext);
                 char * yptr = yytext + backptr*sizeof(char);
-                int done = 0;
+                int done = 1;
                 int count = 0;
                 while (*yptr) {
                     if (*yptr == '\\') {
                         BEGIN(BACK);
-                        yymore();
-                        done = 1;
-                        backptr = count+1;
+                        done = 0;
+                        break;
                     }
+                    else
+                        *esc_buf_ptr = *yptr;
+                    esc_buf_ptr++;
                     yptr++;
                     count++;
                 }
 
-                if (!done) {
+                if (done) {
                     yylval.string_val = rmbackslash(yytext);
                 //printf("Word: %s\n", yytext);
                     backptr = 0;
@@ -139,11 +140,18 @@ char * rmbackslash(char * s) {
                 }
 	}
 
+<BACK>.\n   {
+                    if (esc_buf_ptr != esc_buf) {
+                        yylval.string_val = strdup(esc_buf);
+                        unput('\n');
+                        BEGIN(0);
+                    }
+                        return WORD;
+            }
+
 <BACK>.     {
+                    esc_buf_ptr++ = *yytext;
                     BEGIN(0);
-                    yymore();
-                    yylval.string_val = rmbackslash(yytext);
-                    //return WORD;
             }
 
 <QUOTE>\"      {
