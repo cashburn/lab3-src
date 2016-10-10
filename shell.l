@@ -154,12 +154,16 @@ char * rmbackslash(char * s) {
 	}
 
 <BACK>.\n   {
-                    if (esc_buf_ptr != esc_buf) {
                         *esc_buf_ptr = *yytext;
                         yylval.string_val = strdup(esc_buf);
+                        esc_buf_ptr = esc_buf;
+                        while (*esc_buf_ptr) {
+                            *esc_buf_ptr = '\0';
+                            esc_buf_ptr++;
+                        }
+                        esc_buf_ptr = esc_buf;
                         unput('\n');
                         BEGIN(0);
-                    }
                         return WORD;
             }
 
