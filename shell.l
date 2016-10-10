@@ -126,6 +126,7 @@ char * rmbackslash(char * s) {
                         BEGIN(BACK);
                         yymore();
                     }
+                }
                 yylval.string_val = rmbackslash(yytext);
                 //printf("Word: %s\n", yytext);
 		return WORD;
