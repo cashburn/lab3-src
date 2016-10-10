@@ -127,7 +127,7 @@ char * rmbackslash(char * s) {
                         yymore();
                         done = 1;
                         backptr = count+1;
-                        return;
+                        return 0;
                     }
                     yptr++;
                     count++;
