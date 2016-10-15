@@ -47,13 +47,18 @@ bool compFunc(const char * c1, const char * c2) {
 }
 
 void expandWildcardsIfNecessary(char * arg) {
-	if (strchr(arg, '*') == NULL && strchr(arg, '?') == NULL) {
-		Command::_currentSimpleCommand->insertArgument(arg);
+	char * prefix = (char *) malloc(2*strlen(arg)+10);
+	expandWildcardsIfNecessary(prefix, arg);
+}
+
+void expandWildcardsIfNecessary(char * pre, char * suf) {
+	if (strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
+		Command::_currentSimpleCommand->insertArgument(suf);
 		return;
 	}
 
-	char * a = arg;
-	char * reg = (char *) malloc(2*strlen(arg)+10);
+	char * a = suf;
+	char * reg = (char *) malloc(2*strlen(suf)+10);
 	char * r = reg;
 	int backdot = 0;
 	*r = '^';
@@ -157,7 +162,7 @@ argument_list:
 
 argument:
 	WORD {
-	       expandWildcardsIfNecessary( $1 );\
+	       	expandWildcardsIfNecessary( $1);\
 	}
 	;
 
