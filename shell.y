@@ -46,11 +46,6 @@ bool compFunc(const char * c1, const char * c2) {
 	return strcmp(c1, c2) < 0;
 }
 
-void expandWildcardsIfNecessary(char * arg) {
-	char * prefix = (char *) malloc(2*strlen(arg)+10);
-	wildcardsEverywhere(prefix, arg);
-}
-
 void wildcardsEverywhere(char * pre, char * suf) {
 	if (strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
 		Command::_currentSimpleCommand->insertArgument(suf);
@@ -120,6 +115,11 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
 		Command::_currentSimpleCommand->insertArgument(strdup(*it));
 	}
+}
+
+void expandWildcardsIfNecessary(char * arg) {
+	char * prefix = (char *) malloc(2*strlen(arg)+10);
+	wildcardsEverywhere(prefix, arg);
 }
 
 %}
