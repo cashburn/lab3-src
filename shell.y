@@ -24,6 +24,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <regex.h>
+#include <dirent.h>
+#include <sys/types.h>
 #include "command.h"
 void yyerror(const char * s);
 int yylex();
@@ -43,7 +46,7 @@ void expandWildcardsIfNecessary(char * arg) {
 	*r = '^';
 	r++;
 	while (*a) {
-		if (*ptr == '*') {
+		if (*a == '*') {
 			*r = '.';
 			r++;
 			*r = '*';
