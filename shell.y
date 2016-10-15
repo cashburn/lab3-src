@@ -48,10 +48,10 @@ bool compFunc(const char * c1, const char * c2) {
 
 void expandWildcardsIfNecessary(char * arg) {
 	char * prefix = (char *) malloc(2*strlen(arg)+10);
-	expandWildcardsIfNecessary(prefix, arg);
+	wildcardsEverywhere(prefix, arg);
 }
 
-void expandWildcardsIfNecessary(char * pre, char * suf) {
+void wildcardsEverywhere(char * pre, char * suf) {
 	if (strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
 		Command::_currentSimpleCommand->insertArgument(suf);
 		return;
