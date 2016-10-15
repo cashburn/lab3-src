@@ -30,6 +30,7 @@
 #include <vector>
 #include <algorithm>
 #include "command.h"
+#define MAXFILENAME 1024
 using namespace std;
 void yyerror(const char * s);
 int yylex();
@@ -47,13 +48,31 @@ bool compFunc(const char * c1, const char * c2) {
 }
 
 void wildcardsEverywhere(char * pre, char * suf) {
-	if (strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
-		Command::_currentSimpleCommand->insertArgument(suf);
+	if (suf[0] == '\0') {
+		Command::_currentSimpleCommand->insertArgument(strdup(pre));
+	}
+
+	char * s = strchr(suffix, '/');
+	char component[MAXFILENAME];
+	if (s != NULL) {
+		strncpy(component, suf, s-suf);
+		suf = s + 1;
+	}
+
+	else {
+		strcpy(component, suf);
+		suf = suf + strlen(suf);
+	}
+
+	char newPrefix[MAXFILENAME];
+	if (strchr(component, '*') == NULL && strchr(component, '?') == NULL) {
+		sprintf(newPrefix, "%s/%s", pre, component);
+		wildcardsEverywhere(newPrefix, suf);
 		return;
 	}
 
-	char * a = suf;
-	char * reg = (char *) malloc(2*strlen(suf)+10);
+	char * a = component;
+	char * reg = (char *) malloc(2*strlen(component)+10);
 	char * r = reg;
 	int backdot = 0;
 	*r = '^';
@@ -92,8 +111,12 @@ void wildcardsEverywhere(char * pre, char * suf) {
 		perror("regex compile");
 		return;
 	}
-
-	DIR * dir = opendir(".");
+	char * path;
+	if (strlen(pre) == 0)
+		path = ".";
+	else
+		path = prefix;
+	DIR * dir = opendir(path);
 	if (dir == NULL) {
 		perror("opendir");
 		return;
@@ -106,7 +129,9 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
 			if (backdot || (!backdot && *(ent->d_name) != '.'))
-				matchList.push_back(strdup(ent->d_name));
+				sprintf(newPrefix, "%s/%s", pre, ent->_d_name);
+				wildcardsEverywhere(newPrefix, suf);
+				//matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
 		}
 	}
@@ -162,7 +187,7 @@ argument_list:
 
 argument:
 	WORD {
-	       	expandWildcardsIfNecessary( $1);\
+	       	expandWildcardsIfNecessary($1);\
 	}
 	;
 
