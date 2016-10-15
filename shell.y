@@ -43,7 +43,7 @@ yyerror(const char * s)
 }
 
 bool compFunc(const char * c1, const char * c2) {
-	return strcmp(c1, c2) < 2;
+	return strcmp(c1, c2) < 0;
 }
 
 void expandWildcardsIfNecessary(char * arg) {
