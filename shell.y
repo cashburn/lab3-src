@@ -41,7 +41,7 @@ yyerror(const char * s)
         Command::_currentCommand.clear();
         Command::_currentCommand.prompt();
 }
-
+/*
 bool compFunc(const char * c1, const char * c2) {
 	return strcmp(c1, c2) < 2;
 }
@@ -106,7 +106,7 @@ void expandWildcardsIfNecessary(char * arg) {
 	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
 		Command::_currentSimpleCommand->insertArgument(strdup(*it));
 	}
-}
+}*/
 
 %}
 
