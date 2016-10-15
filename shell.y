@@ -104,7 +104,7 @@ void expandWildcardsIfNecessary(char * arg) {
 	vector<char *> matchList;
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
-			if (backdot || (!backdot && *(ent->d_name) != '.'))
+			//if (backdot || (!backdot && *(ent->d_name) != '.'))
 				matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
 		}
