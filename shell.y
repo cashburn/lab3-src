@@ -28,6 +28,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <vector>
+#include <algorithm>
 #include "command.h"
 using namespace std;
 void yyerror(const char * s);
