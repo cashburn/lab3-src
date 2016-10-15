@@ -27,7 +27,9 @@
 #include <regex.h>
 #include <dirent.h>
 #include <sys/types.h>
+#include <vector>
 #include "command.h"
+using namespace std;
 void yyerror(const char * s);
 int yylex();
 
@@ -87,12 +89,18 @@ void expandWildcardsIfNecessary(char * arg) {
 	struct dirent * ent;
 
 	regmatch_t match;
+	vector<char *> matchList;
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
-			Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
+			matchList::push_back(strdup(ent->d_name));
+			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
 		}
 	}
 	closedir(dir);
+
+	for (vector<char *>::iterator it = matchList.begin(); it != matchList.end(); it++) {
+		Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
+	}
 }
 
 %}
