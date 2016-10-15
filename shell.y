@@ -27,6 +27,70 @@
 void yyerror(const char * s);
 int yylex();
 
+void
+yyerror(const char * s)
+{
+	fprintf(stderr,"%s\n", s);
+        Command::_currentCommand.clear();
+        Command::_currentCommand.prompt();
+}
+
+void expandWildcardsIfNecessary(char * arg) {
+	char * a = arg;
+	char * reg = (char *) malloc(2*strlen(arg)+10);
+	char * r = reg;
+	*r = '^';
+	r++;
+	while (*a) {
+		if (*ptr == '*') {
+			*r = '.';
+			r++;
+			*r = '*';
+			r++;
+		}
+		else if (*a == '?') {
+			*r = '.';
+			r++;
+		}
+		else if (*a == '.') {
+			*r = '\\';
+			r++;
+			*r = '.';
+		}
+		else {
+			*r = *a;
+			r++;
+		}
+		a++;
+	}
+	*r = '$';
+	r++;
+	*r = '\0';
+
+	regex_t re;
+	int result = regcomp(&re, reg, REG_EXTENDED|REG_NOSUB);
+	if (result != 0) {
+		perror("regex compile");
+		return;
+	}
+
+	DIR * dir = opendir(".");
+	if (dir == NULL) {
+		perror("opendir");
+		return;
+	}
+
+	struct dirent * ent;
+
+	regmatch_t match;
+	while ((ent = readdir(dir)) != NULL) {
+		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
+			Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
+		}
+	}
+	closedir(dir);
+}
+
 %}
 
 %%
@@ -118,70 +182,7 @@ background_opt:
 
 %%
 
-void
-yyerror(const char * s)
-{
-	fprintf(stderr,"%s\n", s);
-        Command::_currentCommand.clear();
-        Command::_currentCommand.prompt();
-}
 
-void expandWildcardsIfNecessary(char * arg) {
-	char * a = arg;
-	char * reg = (char *) malloc(2*strlen(arg)+10);
-	char * r = reg;
-	*r = '^';
-	r++;
-	while (*a) {
-		if (*ptr == '*') {
-			*r = '.';
-			r++;
-			*r = '*';
-			r++;
-		}
-		else if (*a == '?') {
-			*r = '.';
-			r++;
-		}
-		else if (*a == '.') {
-			*r = '\\';
-			r++;
-			*r = '.';
-		}
-		else {
-			*r = *a;
-			r++;
-		}
-		a++;
-	}
-	*r = '$';
-	r++;
-	*r = '\0';
-
-	regex_t re;
-	int result = regcomp(&re, reg, REG_EXTENDED|REG_NOSUB);
-	if (result != 0) {
-		perror("regex compile");
-		return;
-	}
-
-	DIR * dir = opendir(".");
-	if (dir == NULL) {
-		perror("opendir");
-		return;
-	}
-
-	struct dirent * ent;
-
-	regmatch_t match;
-	while ((ent = readdir(dir)) != NULL) {
-		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
-			Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
-		}
-	}
-
-	closedir(dir);
-}
 
 #if 0
 main()
