@@ -52,7 +52,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 		Command::_currentSimpleCommand->insertArgument(strdup(pre));
 	}
 
-	char * s = strchr(suffix, '/');
+	char * s = strchr(suf, '/');
 	char component[MAXFILENAME];
 	if (s != NULL) {
 		strncpy(component, suf, s-suf);
@@ -113,9 +113,9 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	}
 	char * path;
 	if (strlen(pre) == 0)
-		path = ".";
+		path = (char *) ".";
 	else
-		path = prefix;
+		path = pre;
 	DIR * dir = opendir(path);
 	if (dir == NULL) {
 		perror("opendir");
@@ -129,7 +129,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
 			if (backdot || (!backdot && *(ent->d_name) != '.'))
-				sprintf(newPrefix, "%s/%s", pre, ent->_d_name);
+				sprintf(newPrefix, "%s/%s", pre, ent->d_name);
 				wildcardsEverywhere(newPrefix, suf);
 				//matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
