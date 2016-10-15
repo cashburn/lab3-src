@@ -22,16 +22,105 @@
 %{
 //#define yylex yylex
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <regex.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <vector>
+#include <algorithm>
 #include "command.h"
+using namespace std;
 void yyerror(const char * s);
 int yylex();
+
+void
+yyerror(const char * s)
+{
+	fprintf(stderr,"%s\n", s);
+        Command::_currentCommand.clear();
+        Command::_currentCommand.prompt();
+}
+
+bool compFunc(const char * c1, const char * c2) {
+	return strcmp(c1, c2) < 0;
+}
+
+void expandWildcardsIfNecessary(char * arg) {
+	if (strchr(arg, '*') == NULL && strchr(arg, '?') == NULL) {
+		Command::_currentSimpleCommand->insertArgument(arg);
+		return;
+	}
+
+	char * a = arg;
+	char * reg = (char *) malloc(2*strlen(arg)+10);
+	char * r = reg;
+	int backdot = 0;
+	*r = '^';
+	r++;
+	while (*a) {
+		if (*a == '*') {
+			*r = '.';
+			r++;
+			*r = '*';
+			r++;
+		}
+		else if (*a == '?') {
+			*r = '.';
+			r++;
+		}
+		else if (*a == '.') {
+			*r = '\\';
+			r++;
+			*r = '.';
+			backdot = 1;
+		}
+		else {
+			*r = *a;
+			r++;
+		}
+		a++;
+	}
+	*r = '$';
+	r++;
+	*r = '\0';
+
+	regex_t re;
+	int result = regcomp(&re, reg, REG_EXTENDED|REG_NOSUB);
+	if (result != 0) {
+		perror("regex compile");
+		return;
+	}
+
+	DIR * dir = opendir(".");
+	if (dir == NULL) {
+		perror("opendir");
+		return;
+	}
+
+	struct dirent * ent;
+
+	regmatch_t match;
+	vector<char *> matchList;
+	while ((ent = readdir(dir)) != NULL) {
+		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
+			if (backdot || (!backdot && *(ent->d_name) != '.'))
+				matchList.push_back(strdup(ent->d_name));
+			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
+		}
+	}
+	closedir(dir);
+	sort(matchList.begin(), matchList.end(), compFunc);
+	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
+		Command::_currentSimpleCommand->insertArgument(strdup(*it));
+	}
+}
 
 %}
 
 %%
 
-goal:	
+goal:
 	command_list
 	;
 
@@ -40,11 +129,11 @@ command_list:
         | command_line
         ;
 
-command_line:	
+command_line:
 	pipe_list io_modifier_list background_opt NEWLINE {
 		Command::_currentCommand.execute();
 	}
-	| NEWLINE 
+	| NEWLINE
 	| error NEWLINE { yyerrok; }
 	;
 
@@ -67,14 +156,13 @@ argument_list:
 
 argument:
 	WORD {
-
-	       Command::_currentSimpleCommand->insertArgument( $1 );\
+	       expandWildcardsIfNecessary( $1 );\
 	}
 	;
 
 command_word:
 	WORD {
-	       
+
 	       Command::_currentSimpleCommand = new SimpleCommand();
 	       Command::_currentSimpleCommand->insertArgument( $1 );
 	}
@@ -119,13 +207,7 @@ background_opt:
 
 %%
 
-void
-yyerror(const char * s)
-{
-	fprintf(stderr,"%s\n", s);
-        Command::_currentCommand.clear();
-        Command::_currentCommand.prompt();
-}
+
 
 #if 0
 main()
