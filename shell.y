@@ -98,7 +98,7 @@ void expandWildcardsIfNecessary(char * arg) {
 		}
 	}
 	closedir(dir);
-	sort(matchList.begin(), matchList.end(), strcmp());
+	sort(matchList.begin(), matchList.end(), strcmp;
 	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
 		Command::_currentSimpleCommand->insertArgument(strdup(*it));
 	}
