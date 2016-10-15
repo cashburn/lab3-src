@@ -73,6 +73,7 @@ void expandWildcardsIfNecessary(char * arg) {
 			*r = '\\';
 			r++;
 			*r = '.';
+			r++;
 			backdot = 1;
 		}
 		else {
