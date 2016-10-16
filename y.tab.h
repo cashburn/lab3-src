@@ -91,6 +91,5 @@ union YYSTYPE
 extern YYSTYPE yylval;
 
 int yyparse (void);
-void scan_string(const char * str);
 
 #endif /* !YY_YY_Y_TAB_H_INCLUDED  */

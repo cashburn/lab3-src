@@ -326,6 +326,7 @@ Command Command::_currentCommand;
 SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
+void scan_string(const char* str);
 
 void sigIntHandler(int sig) {
     printf("\n");
