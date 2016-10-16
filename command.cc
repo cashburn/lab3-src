@@ -348,7 +348,7 @@ int main(int argc, char * argv[]) {
 	if (argc == 3) {
 		if (!strcmp("-c", argv[1])) {
 			printf("Command: %s\n", argv[2]);
-			yy_scan_string(argv[2]);
+			yy_scan_buffer(argv[2]);
 			exit(0);
 		}
 	}
