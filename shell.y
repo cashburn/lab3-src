@@ -128,8 +128,11 @@ void expandWildcard(char * pre, char * suf) {
 		return;
 	}
 	char * path;
-	if (strlen(pre) == 0)
+	if (pre == NULL) {
 		path = (char *) ".";
+	}
+	else if (*pre == '\0')
+		path = (char *) "/";
 	else
 		path = pre;
 	DIR * dir = opendir(path);
