@@ -35,6 +35,7 @@ using namespace std;
 void yyerror(const char * s);
 int yylex();
 int isWildcard;
+vector<char *> matchList;
 
 void
 yyerror(const char * s)
@@ -50,7 +51,7 @@ bool compFunc(const char * c1, const char * c2) {
 
 void expandWildcard(char * pre, char * suf) {
 	if (suf[0] == '\0') {
-		Command::_currentSimpleCommand->insertArgument(strdup(pre));
+
 		return;
 	}
 
@@ -144,7 +145,6 @@ void expandWildcard(char * pre, char * suf) {
 	struct dirent * ent;
 
 	regmatch_t match;
-	vector<char *> matchList;
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
 			if (backdot || (!backdot && *(ent->d_name) != '.')) {
@@ -170,6 +170,15 @@ void expandWildcardsIfNecessary(char * arg) {
 
 	char * prefix = (char *) calloc(2*strlen(arg)+10, sizeof(char));
 	expandWildcard(NULL, arg);
+	if (isWildcard) {
+		sort(matchList.begin(), matchList.end(), compFunc);
+		for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
+			Command::_currentSimpleCommand->insertArgument(strdup(*it));
+		}
+	}
+	isWildcard = 0;
+	matchList.clear();
+
 }
 
 %}
