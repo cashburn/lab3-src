@@ -131,7 +131,8 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
 			if (backdot || (!backdot && *(ent->d_name) != '.')) {
-				sprintf(newPrefix, "%s/%s", pre, ent->d_name);
+				if (pre != '\0')
+					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
 				wildcardsEverywhere(newPrefix, suf);
 			}
 				//matchList.push_back(strdup(ent->d_name));
