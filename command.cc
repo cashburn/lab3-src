@@ -350,6 +350,7 @@ int main(int argc, char * argv[]) {
 		if (!strcmp("-c", argv[1])) {
 			printf("Command: %s\n", argv[2]);
 			scan_string(argv[2]);
+			yyparse();
 			exit(0);
 		}
 	}
