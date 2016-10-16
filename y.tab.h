@@ -79,7 +79,7 @@ union YYSTYPE
 #line 18 "shell.y" /* yacc.c:1909  */
 
 		char   *string_val;
-	
+
 
 #line 85 "y.tab.h" /* yacc.c:1909  */
 };
@@ -91,5 +91,6 @@ union YYSTYPE
 extern YYSTYPE yylval;
 
 int yyparse (void);
+void scan_string(const char * str);
 
 #endif /* !YY_YY_Y_TAB_H_INCLUDED  */

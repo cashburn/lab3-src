@@ -22,7 +22,6 @@
 #include <string.h>
 #include <signal.h>
 #include "command.h"
-#include "shell.l"
 
 SimpleCommand::SimpleCommand()
 {
