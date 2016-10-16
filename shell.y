@@ -59,7 +59,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	}
 
 	char * s = strchr(suf, '/');
-	char * component = calloc(MAXFILENAME, sizeof(char));
+	char * component = (char *) calloc(MAXFILENAME, sizeof(char));
 	if (s != NULL) {
 		strncpy(component, suf, s-suf);
 		suf = s + 1;
