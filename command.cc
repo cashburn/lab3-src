@@ -345,6 +345,13 @@ int main(int argc, char * argv[]) {
     if (signal (SIGCHLD, sigChldHandler) == SIG_IGN)
         signal (SIGCHLD, SIG_IGN);
 
+	if (argc == 3) {
+		if (!strcmp("-c", argv[1]) {
+			printf("Command: %s\n", argv[2]);
+			exit(0);
+		}
+	}
+
     Command::_currentCommand.prompt();
 	yyparse();
 }
