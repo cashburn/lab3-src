@@ -65,7 +65,7 @@ void expandWildcard(char * pre, char * suf) {
 	char * s = strchr(suf, '/');
 	char * component = (char *) calloc(MAXFILENAME, sizeof(char));
 	if (s != NULL) {
-		strncpy(component, suf, s-suf+1);
+		strncpy(component, suf, s-suf);
 		suf = s + 1;
 	}
 
