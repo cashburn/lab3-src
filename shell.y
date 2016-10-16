@@ -152,7 +152,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 
 void expandWildcardsIfNecessary(char * arg) {
 
-	char * prefix = (char *) malloc(2*strlen(arg)+10);
+	char * prefix = (char *) calloc(2*strlen(arg)+10);
 	wildcardsEverywhere(prefix, arg);
 }
 
