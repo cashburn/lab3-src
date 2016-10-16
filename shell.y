@@ -30,9 +30,12 @@
 #include <vector>
 #include <algorithm>
 #include "command.h"
+#define MAXFILENAME 1024
 using namespace std;
 void yyerror(const char * s);
 int yylex();
+int isWildcard;
+vector<char *> matchList;
 
 void
 yyerror(const char * s)
@@ -46,14 +49,47 @@ bool compFunc(const char * c1, const char * c2) {
 	return strcmp(c1, c2) < 0;
 }
 
-void expandWildcardsIfNecessary(char * arg) {
-	if (strchr(arg, '*') == NULL && strchr(arg, '?') == NULL) {
-		Command::_currentSimpleCommand->insertArgument(arg);
+void expandWildcard(char * pre, char * suf) {
+	if (suf[0] == '\0') {
+		matchList.push_back(strdup(pre));
 		return;
 	}
 
-	char * a = arg;
-	char * reg = (char *) malloc(2*strlen(arg)+10);
+	if (strchr(suf, '*') != NULL || strchr(suf, '?') != NULL) {
+		isWildcard = 1;
+	}
+	if (!isWildcard && pre == NULL) {
+		Command::_currentSimpleCommand->insertArgument(strdup(suf));
+		return;
+	}
+
+	char * s = strchr(suf, '/');
+	char * component = (char *) calloc(MAXFILENAME, sizeof(char));
+	if (s != NULL) {
+		strncpy(component, suf, s-suf);
+		suf = s + 1;
+	}
+
+	else {
+		strcpy(component, suf);
+		suf = suf + strlen(suf);
+	}
+
+	char newPrefix[MAXFILENAME];
+	if (strchr(component, '*') == NULL && strchr(component, '?') == NULL) {
+		if (pre == NULL && *component != '\0')
+			sprintf(newPrefix, "%s", component);
+		else if (*component != '\0')
+			sprintf(newPrefix, "%s/%s", pre, component);
+		if (*component != '\0')
+			expandWildcard(newPrefix, suf);
+		else
+			expandWildcard((char *) "", suf);
+		return;
+	}
+
+	char * a = component;
+	char * reg = (char *) malloc(2*strlen(component)+10);
 	char * r = reg;
 	int backdot = 0;
 	*r = '^';
@@ -73,6 +109,7 @@ void expandWildcardsIfNecessary(char * arg) {
 			*r = '\\';
 			r++;
 			*r = '.';
+			r++;
 			backdot = 1;
 		}
 		else {
@@ -91,29 +128,57 @@ void expandWildcardsIfNecessary(char * arg) {
 		perror("regex compile");
 		return;
 	}
-
-	DIR * dir = opendir(".");
+	char * path;
+	if (pre == NULL) {
+		path = (char *) ".";
+	}
+	else if (*pre == '\0')
+		path = (char *) "/";
+	else
+		path = pre;
+	DIR * dir = opendir(path);
 	if (dir == NULL) {
-		perror("opendir");
+		//perror("opendir");
 		return;
 	}
 
 	struct dirent * ent;
 
 	regmatch_t match;
-	vector<char *> matchList;
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
-			if (backdot || (!backdot && *(ent->d_name) != '.'))
-				matchList.push_back(strdup(ent->d_name));
+			if (backdot || (!backdot && *(ent->d_name) != '.')) {
+				if (pre == NULL)
+					sprintf(newPrefix, "%s", ent->d_name);
+				else
+					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
+				expandWildcard(newPrefix, suf);
+			}
+				//matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
 		}
 	}
 	closedir(dir);
+	/*
 	sort(matchList.begin(), matchList.end(), compFunc);
 	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
 		Command::_currentSimpleCommand->insertArgument(strdup(*it));
+	}*/
+}
+
+void expandWildcardsIfNecessary(char * arg) {
+
+	char * prefix = (char *) calloc(2*strlen(arg)+10, sizeof(char));
+	expandWildcard(NULL, arg);
+	if (isWildcard) {
+		sort(matchList.begin(), matchList.end(), compFunc);
+		for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
+			Command::_currentSimpleCommand->insertArgument(strdup(*it));
+		}
 	}
+	isWildcard = 0;
+	matchList.clear();
+
 }
 
 %}
@@ -156,7 +221,7 @@ argument_list:
 
 argument:
 	WORD {
-	       expandWildcardsIfNecessary( $1 );\
+	       	expandWildcardsIfNecessary($1);\
 	}
 	;
 
