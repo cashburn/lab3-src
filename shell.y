@@ -79,7 +79,7 @@ void expandWildcard(char * pre, char * suf) {
 		if (*component != '\0')
 			expandWildcard(newPrefix, suf);
 		else
-			expandWildcard("", suf);
+			expandWildcard((char *) "", suf);
 		return;
 	}
 
