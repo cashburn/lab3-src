@@ -57,7 +57,7 @@ void expandWildcard(char * pre, char * suf) {
 	if (strchr(suf, '*') != NULL || strchr(suf, '?') != NULL) {
 		isWildcard = 1;
 	}
-	if (!isWildcard && *pre == '\0') {
+	if (!isWildcard && pre == NULL) {
 		Command::_currentSimpleCommand->insertArgument(strdup(suf));
 		return;
 	}
