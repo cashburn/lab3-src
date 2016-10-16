@@ -209,6 +209,7 @@ char * rmbackslash(char * s) {
                 if (!(pid = fork())) {
                     //Child Process
                      execvp(tmp, NULL);
+                     perror("exec");
                      exit(1);
                 }
 
