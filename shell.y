@@ -169,7 +169,7 @@ void expandWildcard(char * pre, char * suf) {
 void expandWildcardsIfNecessary(char * arg) {
 
 	char * prefix = (char *) calloc(2*strlen(arg)+10, sizeof(char));
-	expandWildcard(prefix, arg);
+	expandWildcard(NULL, arg);
 }
 
 %}
