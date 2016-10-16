@@ -34,6 +34,7 @@
 using namespace std;
 void yyerror(const char * s);
 int yylex();
+int isWildcard;
 
 void
 yyerror(const char * s)
@@ -47,21 +48,20 @@ bool compFunc(const char * c1, const char * c2) {
 	return strcmp(c1, c2) < 0;
 }
 
-void wildcardsEverywhere(char * pre, char * suf) {
+void expandWildcard(char * pre, char * suf) {
 	if (suf[0] == '\0') {
 		Command::_currentSimpleCommand->insertArgument(strdup(pre));
 		return;
 	}
 
-	if (pre[0] == '\0' && strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
-		Command::_currentSimpleCommand->insertArgument(strdup(suf));
-		return;
+	if (strchr(suf, '*') != NULL || strchr(suf, '?') != NULL) {
+		isWildcard = 1;
 	}
 
 	char * s = strchr(suf, '/');
 	char * component = (char *) calloc(MAXFILENAME, sizeof(char));
 	if (s != NULL) {
-		strncpy(component, suf, s-suf);
+		strncpy(component, suf, s-suf+1);
 		suf = s + 1;
 	}
 
@@ -72,9 +72,14 @@ void wildcardsEverywhere(char * pre, char * suf) {
 
 	char newPrefix[MAXFILENAME];
 	if (strchr(component, '*') == NULL && strchr(component, '?') == NULL) {
-		if (*component != '\0')
+		if (pre == NULL && *component != '\0')
+			sprintf(newPrefix, "%s", component);
+		else if (*component != '\0')
 			sprintf(newPrefix, "%s/%s", pre, component);
-		wildcardsEverywhere(newPrefix, suf);
+		if (*component != '\0')
+			expandWildcard(newPrefix, suf);
+		else
+			expandWildcard("", suffix);
 		return;
 	}
 
@@ -140,7 +145,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
 				else
 					sprintf(newPrefix, "%s", ent->d_name);
-				wildcardsEverywhere(newPrefix, suf);
+				expandWildcard(newPrefix, suf);
 			}
 				//matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
@@ -157,7 +162,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 void expandWildcardsIfNecessary(char * arg) {
 
 	char * prefix = (char *) calloc(2*strlen(arg)+10, sizeof(char));
-	wildcardsEverywhere(prefix, arg);
+	expandWildcard(prefix, arg);
 }
 
 %}
