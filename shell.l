@@ -51,7 +51,6 @@ char * rmbackslash(char * s) {
 void scan_string(const char* str)
 {
     yy_switch_to_buffer(yy_scan_string(str));
-    yylex();
 }
 
 %}
