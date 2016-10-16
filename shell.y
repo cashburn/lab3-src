@@ -53,8 +53,12 @@ void wildcardsEverywhere(char * pre, char * suf) {
 		return;
 	}
 
-	char * s = strchr(suf, '/');
+	if (pre == '\0' && strchr(suf, '*') == NULL && strchr(suf, '?') == NULL)) {
+		Command::_currentSimpleCommand->insertArgument(strdup(suf));
+		return;
+	}
 
+	char * s = strchr(suf, '/');
 	char component[MAXFILENAME];
 	if (s != NULL) {
 		strncpy(component, suf, s-suf);
@@ -62,10 +66,6 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	}
 
 	else {
-		if (pre == '\0') {
-			Command::_currentSimpleCommand->insertArgument(strdup(suf));
-			return;
-		}
 		strcpy(component, suf);
 		suf = suf + strlen(suf);
 	}
