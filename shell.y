@@ -133,6 +133,8 @@ void wildcardsEverywhere(char * pre, char * suf) {
 			if (backdot || (!backdot && *(ent->d_name) != '.')) {
 				if (*pre != '\0')
 					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
+				else
+					sprintf(newPrefix, "%s", ent->d_name);
 				wildcardsEverywhere(newPrefix, suf);
 			}
 				//matchList.push_back(strdup(ent->d_name));
