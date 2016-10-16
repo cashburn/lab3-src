@@ -68,7 +68,8 @@ void wildcardsEverywhere(char * pre, char * suf) {
 
 	char newPrefix[MAXFILENAME];
 	if (strchr(component, '*') == NULL && strchr(component, '?') == NULL) {
-		sprintf(newPrefix, "%s/%s", pre, component);
+		if (pre[0] != '\0')
+			sprintf(newPrefix, "%s/%s", pre, component);
 		wildcardsEverywhere(newPrefix, suf);
 		return;
 	}
@@ -150,6 +151,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 }
 
 void expandWildcardsIfNecessary(char * arg) {
+
 	char * prefix = (char *) malloc(2*strlen(arg)+10);
 	wildcardsEverywhere(prefix, arg);
 }
