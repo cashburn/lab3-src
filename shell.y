@@ -51,7 +51,7 @@ bool compFunc(const char * c1, const char * c2) {
 
 void expandWildcard(char * pre, char * suf) {
 	if (suf[0] == '\0') {
-
+		matchList.push_back(strdup(ent->d_name));
 		return;
 	}
 
