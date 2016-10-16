@@ -50,7 +50,9 @@ bool compFunc(const char * c1, const char * c2) {
 void wildcardsEverywhere(char * pre, char * suf) {
 	if (suf[0] == '\0') {
 		Command::_currentSimpleCommand->insertArgument(strdup(pre));
+		return;
 	}
+
 
 	char * s = strchr(suf, '/');
 	char component[MAXFILENAME];
@@ -128,18 +130,20 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	vector<char *> matchList;
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
-			if (backdot || (!backdot && *(ent->d_name) != '.'))
+			if (backdot || (!backdot && *(ent->d_name) != '.')) {
 				sprintf(newPrefix, "%s/%s", pre, ent->d_name);
 				wildcardsEverywhere(newPrefix, suf);
+			}
 				//matchList.push_back(strdup(ent->d_name));
 			//Command::_currentSimpleCommand->insertArgument(strdup(ent->d_name));
 		}
 	}
 	closedir(dir);
+	/*
 	sort(matchList.begin(), matchList.end(), compFunc);
 	for (vector<char *>::iterator it = matchList.begin(); it < matchList.end(); it++) {
 		Command::_currentSimpleCommand->insertArgument(strdup(*it));
-	}
+	}*/
 }
 
 void expandWildcardsIfNecessary(char * arg) {
