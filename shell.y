@@ -57,6 +57,10 @@ void expandWildcard(char * pre, char * suf) {
 	if (strchr(suf, '*') != NULL || strchr(suf, '?') != NULL) {
 		isWildcard = 1;
 	}
+	if (!isWildcard && *pre == '\0') {
+		Command::_currentSimpleCommand->insertArgument(strdup(suf));
+		return;
+	}
 
 	char * s = strchr(suf, '/');
 	char * component = (char *) calloc(MAXFILENAME, sizeof(char));
