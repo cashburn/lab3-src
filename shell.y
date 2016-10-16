@@ -148,10 +148,10 @@ void expandWildcard(char * pre, char * suf) {
 	while ((ent = readdir(dir)) != NULL) {
 		if (regexec(&re, ent->d_name, 1, &match, 0) == 0) {
 			if (backdot || (!backdot && *(ent->d_name) != '.')) {
-				if (*pre != '\0')
-					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
-				else
+				if (pre == NULL)
 					sprintf(newPrefix, "%s", ent->d_name);
+				else
+					sprintf(newPrefix, "%s/%s", pre, ent->d_name);
 				expandWildcard(newPrefix, suf);
 			}
 				//matchList.push_back(strdup(ent->d_name));
