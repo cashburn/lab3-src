@@ -70,6 +70,8 @@ void wildcardsEverywhere(char * pre, char * suf) {
 	if (strchr(component, '*') == NULL && strchr(component, '?') == NULL) {
 		if (pre[0] != '\0')
 			sprintf(newPrefix, "%s/%s", pre, component);
+		else
+			strcpy(newPrefix, component);
 		wildcardsEverywhere(newPrefix, suf);
 		return;
 	}
