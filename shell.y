@@ -53,7 +53,7 @@ void wildcardsEverywhere(char * pre, char * suf) {
 		return;
 	}
 
-	if (pre == '\0' && strchr(suf, '*') == NULL && strchr(suf, '?') == NULL)) {
+	if (pre == '\0' && strchr(suf, '*') == NULL && strchr(suf, '?') == NULL) {
 		Command::_currentSimpleCommand->insertArgument(strdup(suf));
 		return;
 	}
