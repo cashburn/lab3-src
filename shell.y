@@ -138,7 +138,7 @@ void expandWildcard(char * pre, char * suf) {
 		path = pre;
 	DIR * dir = opendir(path);
 	if (dir == NULL) {
-		perror("opendir");
+		//perror("opendir");
 		return;
 	}
 
