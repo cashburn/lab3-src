@@ -351,7 +351,7 @@ int main(int argc, char * argv[]) {
 			printf("Command: %s\n", argv[2]);
 			scan_string(argv[2]);
 			yyparse();
-			//exit(0);
+			exit(0);
 		}
 	}
 
