@@ -65,7 +65,7 @@ char * rmbackslash(char * s) {
                 string_buf_ptr = string_buf;
                 BEGIN(QUOTE);
         }
-`       {
+"`"       {
                 subsh_buf_ptr = subsh_buf;
                 BEGIN(BACKTICK);
         }
@@ -76,7 +76,7 @@ char * rmbackslash(char * s) {
 
 [ \t] 	{
 		/* Discard spaces and tabs */
-     	}	
+     	}
 
 "~"     {
                 yylval.string_val = strdup(getenv("HOME"));
@@ -114,7 +114,7 @@ char * rmbackslash(char * s) {
 
 [^`" \\\t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
-                
+
                 if (esc_buf_ptr == NULL) {
                     esc_buf_ptr = esc_buf;
                 }
@@ -181,7 +181,7 @@ char * rmbackslash(char * s) {
                 BEGIN(0);
                 return WORD;
             }
-    
+
 <QUOTE>[^\\\n\"]+       {
                 char * yptr = yytext;
                 while (*yptr)
@@ -202,7 +202,7 @@ char * rmbackslash(char * s) {
                         }
 <BACKTICK>`     {
                 subsh_buf_ptr = '\0';
-                printf("Command: %s\n", string_buf);
+                printf("Command: %s\n", subsh_buf);
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
                 int pid;
@@ -211,7 +211,7 @@ char * rmbackslash(char * s) {
                      execvp(tmp, NULL);
                      exit(1);
                 }
-                
+
                 BEGIN(0);
                 return WORD;
                 }
