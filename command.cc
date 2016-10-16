@@ -346,7 +346,7 @@ int main(int argc, char * argv[]) {
         signal (SIGCHLD, SIG_IGN);
 
 	if (argc == 3) {
-		if (!strcmp("-c", argv[1]) {
+		if (!strcmp("-c", argv[1])) {
 			printf("Command: %s\n", argv[2]);
 			exit(0);
 		}
