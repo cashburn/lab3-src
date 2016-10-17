@@ -221,6 +221,7 @@ void scan_string(const char* str)
                     printf("This should be out of the string\n");
                     freopen("/dev/null", "a", stdout);
                     setbuf(stdout, subsh_output);
+                    printf("This should be in the string\n");
                      execlp(tmp, "shell", "-c", subsh_buf, NULL);
                      perror("exec");
 
