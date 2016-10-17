@@ -19,6 +19,7 @@ static  void yyunput (int c,char *buf_ptr  );
 char string_buf[MAX_STR_CONST];
 char * string_buf_ptr;
 
+char subsh_output[MAX_STR_CONST];
 char subsh_buf[MAX_STR_CONST];
 char * subsh_buf_ptr;
 
@@ -216,11 +217,12 @@ void scan_string(const char* str)
                     //Child Process
                     //printf("Inside the child\n");
                     //execlp("/bin/echo", "echo", "this is a test", NULL);
+                    freopen("/dev/null", "a", stdout);
+                    setbuf(stdout, subsh_output);
                      execlp(tmp, "shell", "-c", subsh_buf, NULL);
                      perror("exec");
 
                 }
-
 
                 BEGIN(0);
                 }
