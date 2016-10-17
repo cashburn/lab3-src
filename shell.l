@@ -74,6 +74,11 @@ void scan_string(const char* str)
         }
 "`"       {
                 subsh_buf_ptr = subsh_buf;
+                char * tmpptr = subsh_output;
+                while (*tmpptr) {
+                    *tmpptr = '\0';
+                    tmpptr++;
+                }
                 BEGIN(BACKTICK);
         }
 
