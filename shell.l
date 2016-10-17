@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <sys/wait.h>
 #include "y.tab.h"
 #define MAX_STR_CONST 4096
 
