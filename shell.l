@@ -211,13 +211,16 @@ void scan_string(const char* str)
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
                 int pid;
+                char * arr[3];
                 if (!(pid = fork())) {
                     //Child Process
+                    printf("Inside the child\n");
                     execlp("/bin/echo", "this is a test", NULL);
                      //execlp(tmp, "-c", subsh_buf, NULL);
                      perror("exec");
+
                 }
-                exit(0);
+
 
                 BEGIN(0);
                 }
