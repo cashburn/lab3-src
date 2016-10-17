@@ -214,9 +214,9 @@ void scan_string(const char* str)
                 char * arr[3];
                 if (!(pid = fork())) {
                     //Child Process
-                    printf("Inside the child\n");
-                    execlp("/bin/echo", "echo", "this is a test", NULL);
-                     //execlp(tmp, "-c", subsh_buf, NULL);
+                    //printf("Inside the child\n");
+                    //execlp("/bin/echo", "echo", "this is a test", NULL);
+                     execlp(tmp, "shell", "-c", subsh_buf, NULL);
                      perror("exec");
 
                 }
