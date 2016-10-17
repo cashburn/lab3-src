@@ -216,8 +216,8 @@ void scan_string(const char* str)
                     execlp("/bin/echo", "this is a test", NULL);
                      //execlp(tmp, "-c", subsh_buf, NULL);
                      perror("exec");
-                     exit(1);
                 }
+                exit(0);
 
                 BEGIN(0);
                 }
