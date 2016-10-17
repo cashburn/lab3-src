@@ -214,7 +214,7 @@ void scan_string(const char* str)
                 if (!(pid = fork())) {
                     //Child Process
                     printf("I am in the child: %s\n", tmp);
-                     execlp(tmp, "-c", strdup(subsh_buf));
+                     execlp(tmp, "-c");
                      perror("exec");
                      exit(1);
                 }
