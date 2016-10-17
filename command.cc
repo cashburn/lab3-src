@@ -23,6 +23,8 @@
 #include <signal.h>
 #include "command.h"
 
+int argcommand;
+
 SimpleCommand::SimpleCommand()
 {
 	// Create available space for 5 arguments
@@ -316,7 +318,7 @@ Command::execute()
 void
 Command::prompt()
 {
-    if (isatty(fileno(stdin))) {
+    if (isatty(fileno(stdin)) && !argcommand) {
 	printf(GRN "> $ " NRM);
 	fflush(stderr);
     }
@@ -348,6 +350,7 @@ int main(int argc, char * argv[]) {
 
 	if (argc == 3) {
 		if (!strcmp("-c", argv[1])) {
+			argcommand = 1;
 			char * tmp = (char *) malloc((strlen(argv[2])+2)*sizeof(char));
 			sprintf(tmp, "%s\n", argv[2]);
 			scan_string(tmp);
