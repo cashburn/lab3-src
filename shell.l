@@ -227,11 +227,11 @@ void scan_string(const char* str)
                 while (fgets(subsh_output, MAX_STR_CONST, fp) != NULL)
                     printf("%s", subsh_output);
 
-                status = pclose(fp);
-                if (status == -1) {
+                //status = pclose(fp);
+                /*if (status == -1) {
                     perror("pclose");
                     exit(1);
-                }
+                }*/
 
                 /*if (!(pid = fork())) {
                     //Child Process
