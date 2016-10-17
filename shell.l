@@ -227,6 +227,6 @@ void scan_string(const char* str)
 
                 }
                 waitpid(pid, 0, 0);
-                printf("%s\n", subsh_output);
+                printf("String: %s\n", subsh_output);
                 BEGIN(0);
                 }
