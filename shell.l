@@ -189,7 +189,7 @@ void scan_string(const char* str)
                 return WORD;
             }
 
-<QUOTE>[^\\\n\"]"+       {
+<QUOTE>[^\\\n\"]+       {
                 char * yptr = yytext;
                 while (*yptr)
                     *string_buf_ptr++ = *yptr++;
@@ -232,7 +232,7 @@ void scan_string(const char* str)
                     perror("pclose");
                     exit(1);
                 }
-                
+
                 /*if (!(pid = fork())) {
                     //Child Process
                     //printf("Inside the child\n");
