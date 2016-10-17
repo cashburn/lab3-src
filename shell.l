@@ -224,8 +224,10 @@ void scan_string(const char* str)
                     exit(1);
                 }
 
-                while (fgets(subsh_output, MAX_STR_CONST, fp) != NULL)
-                    printf("%s", subsh_output);
+                char temp[MAX_STR_CONST];
+                while (fgets(temp, MAX_STR_CONST, fp) != NULL)
+                    sprintf(subsh_output, "%s%s", subsh_output, temp);
+                yylval.string_val = strdup(subsh_output);
 
                 //status = pclose(fp);
                 /*if (status == -1) {
@@ -247,6 +249,7 @@ void scan_string(const char* str)
                 }
                 waitpid(pid, 0, 0);
                 */
-                printf("String: %s\n", subsh_output);
+
                 BEGIN(0);
+                return WORD;
                 }
