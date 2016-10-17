@@ -348,7 +348,6 @@ int main(int argc, char * argv[]) {
 
 	if (argc == 3) {
 		if (!strcmp("-c", argv[1])) {
-			printf("Command: %s\n", argv[2]);
 			char * tmp = (char *) malloc((strlen(argv[2])+2)*sizeof(char));
 			sprintf(tmp, "%s\n", argv[2]);
 			scan_string(tmp);
