@@ -213,7 +213,7 @@ void scan_string(const char* str)
                 int pid;
                 if (!(pid = fork())) {
                     //Child Process
-                     execvp(tmp, NULL);
+                     execp(tmp, "-c", subsh_buf);
                      perror("exec");
                      exit(1);
                 }
