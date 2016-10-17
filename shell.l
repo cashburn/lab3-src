@@ -189,7 +189,7 @@ void scan_string(const char* str)
                 return WORD;
             }
 
-<QUOTE>[^\\\n\"]+       {
+<QUOTE>[^\\\n\"]"+       {
                 char * yptr = yytext;
                 while (*yptr)
                     *string_buf_ptr++ = *yptr++;
@@ -214,7 +214,26 @@ void scan_string(const char* str)
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
                 int pid;
                 char * arr[3];
-                if (!(pid = fork())) {
+
+                sprintf(tmp, "%s -c %s", tmp, subsh_buf);
+                FILE * fp;
+                int status;
+                fp = popen(tmp, "r");
+                if (fp == NULL) {
+                    perror("popen");
+                    exit(1);
+                }
+
+                while (fgets(subsh_output, MAX_STR_CONST, fp) != NULL)
+                    printf("%s", subsh_output);
+
+                status = pclose(fp);
+                if (status == -1) {
+                    perror("pclose");
+                    exit(1);
+                }
+                
+                /*if (!(pid = fork())) {
                     //Child Process
                     //printf("Inside the child\n");
                     //execlp("/bin/echo", "echo", "this is a test", NULL);
@@ -227,6 +246,7 @@ void scan_string(const char* str)
 
                 }
                 waitpid(pid, 0, 0);
+                */
                 printf("String: %s\n", subsh_output);
                 BEGIN(0);
                 }
