@@ -155,8 +155,6 @@ Command::execute()
         return;
     }
 
-
-
     for (int i = 0; i < numPipes; i++) {
         if (pipe(fdpipe + i*2) < 0) {
             fprintf(stderr, "PIPE ERROR\n");
