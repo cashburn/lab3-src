@@ -213,7 +213,7 @@ void scan_string(const char* str)
                 int pid;
                 if (!(pid = fork())) {
                     //Child Process
-                    printf("I am in the child\n");
+                    printf("I am in the child: %s\n", tmp);
                      execlp(tmp, "-c", subsh_buf);
                      perror("exec");
                      exit(1);
