@@ -213,7 +213,8 @@ void scan_string(const char* str)
                 int pid;
                 if (!(pid = fork())) {
                     //Child Process
-                     execlp(tmp, "-c", subsh_buf, NULL);
+                    execlp("/bin/echo", "this is a test", NULL);
+                     //execlp(tmp, "-c", subsh_buf, NULL);
                      perror("exec");
                      exit(1);
                 }
