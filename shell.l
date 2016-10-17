@@ -218,6 +218,7 @@ void scan_string(const char* str)
                     //Child Process
                     //printf("Inside the child\n");
                     //execlp("/bin/echo", "echo", "this is a test", NULL);
+                    printf("This should be out of the string\n");
                     freopen("/dev/null", "a", stdout);
                     setbuf(stdout, subsh_output);
                      execlp(tmp, "shell", "-c", subsh_buf, NULL);
