@@ -223,6 +223,7 @@ void scan_string(const char* str)
                      perror("exec");
 
                 }
-
+                waitpid(pid, 0, 0);
+                printf("%s\n", subsh_output);
                 BEGIN(0);
                 }
