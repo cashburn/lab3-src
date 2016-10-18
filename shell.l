@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <sys/wait.h>
 #include "y.tab.h"
 #define MAX_STR_CONST 4096
 
@@ -19,6 +20,7 @@ static  void yyunput (int c,char *buf_ptr  );
 char string_buf[MAX_STR_CONST];
 char * string_buf_ptr;
 
+char subsh_output[MAX_STR_CONST];
 char subsh_buf[MAX_STR_CONST];
 char * subsh_buf_ptr;
 
@@ -48,6 +50,11 @@ char * rmbackslash(char * s) {
     return dest;
 }
 
+void scan_string(const char* str)
+{
+    yy_switch_to_buffer(yy_scan_string(str));
+}
+
 %}
 
 %x QUOTE
@@ -65,8 +72,18 @@ char * rmbackslash(char * s) {
                 string_buf_ptr = string_buf;
                 BEGIN(QUOTE);
         }
-`       {
+"`"       {
                 subsh_buf_ptr = subsh_buf;
+                char * tmpptr = subsh_output;
+                while (*tmpptr) {
+                    *tmpptr = '\0';
+                    tmpptr++;
+                }
+                tmpptr = subsh_buf;
+                while (*tmpptr) {
+                    *tmpptr = '\0';
+                    tmpptr++;
+                }
                 BEGIN(BACKTICK);
         }
 
@@ -76,7 +93,7 @@ char * rmbackslash(char * s) {
 
 [ \t] 	{
 		/* Discard spaces and tabs */
-     	}	
+     	}
 
 "~"     {
                 yylval.string_val = strdup(getenv("HOME"));
@@ -114,7 +131,7 @@ char * rmbackslash(char * s) {
 
 [^`" \\\t\n][^ \t\n]*  {
 		/* Assume that file names have only alpha chars */
-                
+
                 if (esc_buf_ptr == NULL) {
                     esc_buf_ptr = esc_buf;
                 }
@@ -181,7 +198,7 @@ char * rmbackslash(char * s) {
                 BEGIN(0);
                 return WORD;
             }
-    
+
 <QUOTE>[^\\\n\"]+       {
                 char * yptr = yytext;
                 while (*yptr)
@@ -202,16 +219,48 @@ char * rmbackslash(char * s) {
                         }
 <BACKTICK>`     {
                 subsh_buf_ptr = '\0';
-                printf("Command: %s\n", string_buf);
+                printf("Command: %s\n", subsh_buf);
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
                 int pid;
-                if (!(pid = fork())) {
-                    //Child Process
-                     execvp(tmp, NULL);
-                     exit(1);
+                char * arr[3];
+
+                sprintf(tmp, "%s -c %s", tmp, subsh_buf);
+                FILE * fp;
+                int status;
+                fp = popen(tmp, "r");
+                if (fp == NULL) {
+                    perror("popen");
+                    exit(1);
                 }
-                
+
+                char temp[MAX_STR_CONST];
+                while (fgets(temp, MAX_STR_CONST, fp) != NULL)
+                    //printf("%s", temp);
+                    sprintf(subsh_output, "%s%s", subsh_output, temp);
+                yylval.string_val = strdup(subsh_output);
+
+                //status = pclose(fp);
+                /*if (status == -1) {
+                    perror("pclose");
+                    exit(1);
+                }*/
+
+                /*if (!(pid = fork())) {
+                    //Child Process
+                    //printf("Inside the child\n");
+                    //execlp("/bin/echo", "echo", "this is a test", NULL);
+                    printf("This should be out of the string\n");
+                    freopen("/dev/null", "a", stdout);
+                    setbuf(stdout, subsh_output);
+                    printf("This should be in the string\n");
+                     execlp(tmp, "shell", "-c", subsh_buf, NULL);
+                     perror("exec");
+
+                }
+                waitpid(pid, 0, 0);
+                */
+
                 BEGIN(0);
-                return WORD;
+                //return WORD;
                 }

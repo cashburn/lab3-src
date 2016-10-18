@@ -23,6 +23,8 @@
 #include <signal.h>
 #include "command.h"
 
+int argcommand;
+
 SimpleCommand::SimpleCommand()
 {
 	// Create available space for 5 arguments
@@ -40,12 +42,12 @@ SimpleCommand::insertArgument( char * argument )
 		_arguments = (char **) realloc( _arguments,
 				  _numOfAvailableArguments * sizeof( char * ) );
 	}
-	
+
 	_arguments[ _numOfArguments ] = argument;
 
 	// Add NULL argument at the end
 	_arguments[ _numOfArguments + 1] = NULL;
-	
+
 	_numOfArguments++;
 }
 
@@ -71,7 +73,7 @@ Command::insertSimpleCommand( SimpleCommand * simpleCommand )
 		_simpleCommands = (SimpleCommand **) realloc( _simpleCommands,
 			 _numOfAvailableSimpleCommands * sizeof( SimpleCommand * ) );
 	}
-	
+
 	_simpleCommands[ _numOfSimpleCommands ] = simpleCommand;
 	_numOfSimpleCommands++;
 }
@@ -83,7 +85,7 @@ Command:: clear()
 		for ( int j = 0; j < _simpleCommands[ i ]->_numOfArguments; j ++ ) {
 			free ( _simpleCommands[ i ]->_arguments[ j ] );
 		}
-		
+
 		free ( _simpleCommands[ i ]->_arguments );
 		free ( _simpleCommands[ i ] );
 	}
@@ -115,7 +117,7 @@ Command::print()
 	printf("\n");
 	printf("  #   Simple Commands\n");
 	printf("  --- ----------------------------------------------------------\n");
-	
+
 	for ( int i = 0; i < _numOfSimpleCommands; i++ ) {
 		printf("  %-3d ", i );
 		for ( int j = 0; j < _simpleCommands[i]->_numOfArguments; j++ ) {
@@ -131,7 +133,7 @@ Command::print()
 		_inFile?_inFile:"default", _errFile?_errFile:"default",
 		_background?"YES":"NO");
 	printf( "\n\n" );
-	
+
 }
 
 void
@@ -153,14 +155,12 @@ Command::execute()
         return;
     }
 
-            
-    
     for (int i = 0; i < numPipes; i++) {
         if (pipe(fdpipe + i*2) < 0) {
             fprintf(stderr, "PIPE ERROR\n");
         }
     }
-    
+
     for (int i = 0; i < _numOfSimpleCommands; i++) {
         if (i == 0) {
             //Input File
@@ -252,7 +252,7 @@ Command::execute()
         //Fork
         if (!(pid = fork())) {
             //Child Process
-            
+
             //Not the first command--must be piped to
             if (i > 0) {
                 dup2(fdpipe[(i*2)-2], 0);
@@ -269,9 +269,9 @@ Command::execute()
                 close(defaultin);
                 close(defaultout);
                 close(defaulterr);
-                
+
                 //Execute command
-              
+
             if (!strcmp(_simpleCommands[i]->_arguments[0], "printenv")) {
                 int count = 0;
                 printf("\n");
@@ -281,9 +281,9 @@ Command::execute()
                 }
                 exit(0);
             }
-            
-            
-            
+
+
+
             else {
                 execvp(_simpleCommands[i]->_arguments[0], _simpleCommands[i]->_arguments);
                 printf("ERROR: Command not found.\n");
@@ -294,7 +294,7 @@ Command::execute()
     }
         for (int j = 0; j < 2*numPipes; j++)
             close(fdpipe[j]);
-        
+
         if(!_background)
             waitpid(pid, 0, 0);
 
@@ -306,7 +306,7 @@ Command::execute()
         close(defaultout);
         close(defaulterr);
 	clear();
-	
+
 	// Print new prompt
 	prompt();
 }
@@ -316,7 +316,7 @@ Command::execute()
 void
 Command::prompt()
 {
-    if (isatty(fileno(stdin))) {
+    if (isatty(fileno(stdin)) && !argcommand) {
 	printf(GRN "> $ " NRM);
 	fflush(stderr);
     }
@@ -326,9 +326,10 @@ Command Command::_currentCommand;
 SimpleCommand * Command::_currentSimpleCommand;
 
 int yyparse(void);
+void scan_string(const char* str);
 
 void sigIntHandler(int sig) {
-    printf("\n"); 
+    printf("\n");
     Command::_currentCommand.prompt();
     fflush(stdout);
 }
@@ -339,24 +340,23 @@ void sigChldHandler(int sig) {
         //fprintf(stderr, "%d exited.\n", pid);
 }
 
-main()
-{
-	/*struct sigaction sa;
-        sa.sa_handler = sigIntHandler;
-        sigemptyset(&sa.sa_mask);
-        sa.sa_flags = SA_RESTART;
+int main(int argc, char * argv[]) {
+    if (signal (SIGINT, sigIntHandler) == SIG_IGN)
+        signal (SIGINT, SIG_IGN);
+    if (signal (SIGCHLD, sigChldHandler) == SIG_IGN)
+        signal (SIGCHLD, SIG_IGN);
 
-        if (sigaction(SIGINT, &sa, NULL)) {
-            perror("sigaction");
-            exit(2);
-        }*/
+	if (argc == 3) {
+		if (!strcmp("-c", argv[1])) {
+			argcommand = 1;
+			char * tmp = (char *) malloc((strlen(argv[2])+2)*sizeof(char));
+			sprintf(tmp, "%s\n", argv[2]);
+			scan_string(tmp);
+			yyparse();
+			exit(0);
+		}
+	}
 
-        if (signal (SIGINT, sigIntHandler) == SIG_IGN)
-            signal (SIGINT, SIG_IGN);
-        if (signal (SIGCHLD, sigChldHandler) == SIG_IGN)
-            signal (SIGCHLD, SIG_IGN);
-
-        Command::_currentCommand.prompt();
+    Command::_currentCommand.prompt();
 	yyparse();
 }
-

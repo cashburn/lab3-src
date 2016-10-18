@@ -272,7 +272,10 @@ background_opt:
 
 %%
 
-
+/*void scan_string(const char* str)
+{
+    yy_switch_to_buffer(yy_scan_string(str));
+}*/
 
 #if 0
 main()
