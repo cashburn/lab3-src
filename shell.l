@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include <unistd.h>
 #include "y.tab.h"
 #include "command.h"
 #define MAX_STR_CONST 4096
