@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <vector>
 
 #define MAX_BUFFER_LINE 2048
 
@@ -30,6 +31,8 @@ char * history [] = {
   (char *) "make",
   (char *) "ls -al | grep xxx | grep yyy"
 };
+vector<char *> historynew;
+
 int history_length = sizeof(history)/sizeof(char *);
 
 void read_line_print_usage()
@@ -160,9 +163,9 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, history[history_index-2]);
+	strcpy(line_buffer, historynew[history_index-2]);
 	line_length = strlen(line_buffer);
-	history_index=(history_index-1)%history_length;
+	history_index=(history_index-1)%historynew.size();
 
 	// echo line
 	write(1, line_buffer, line_length);
@@ -187,6 +190,9 @@ char * read_line() {
 
 
   }
+
+  historynew.push_back(strdup(line_buffer));
+  history_index = histroynew.size();
 
   // Add eol and null char at the end of string
   line_buffer[line_length]=10;
