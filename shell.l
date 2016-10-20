@@ -131,6 +131,21 @@ void scan_string(const char* str)
                 BEGIN(BACKTICK);
         }
 
+${.*}   {
+                char * beg = yytext + 2;
+                char * s = beg;
+                char tmp[MAX_STR_CONST];\
+                char * t = tmp;
+                while (*s != '}') {
+                    *t = *s;
+                    t++;
+                    s++;
+                }
+                *t = '\0';
+                yylval.string_val = strdup(getenv(tmp));
+                return WORD;
+        }
+
 \n 	{
 		return NEWLINE;
 	}
