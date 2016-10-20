@@ -88,7 +88,7 @@ char * read_line() {
     }
     else if (ch == 8 || ch == 127) {
       // <backspace> was typed. Remove previous character read.
-
+      printf("%d", ch);
       // Go back one character
       ch = 8;
       write(1,&ch,1);
