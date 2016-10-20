@@ -65,12 +65,11 @@ char * read_line() {
 
     if (ch==10) {
       // <Enter> was typed. Return line
-      
-      // Print newline
-      write(1,&ch,1);
-
       historynew.push_back(strdup(line_buffer));
       history_index = historynew.size() - 1;
+
+      // Print newline
+      write(1,&ch,1);
 
       break;
     }
