@@ -318,7 +318,7 @@ Command::prompt()
 {
     if (isatty(fileno(stdin)) && !argcommand) {
 	printf(GRN "> $ " NRM);
-	fflush(stderr);
+	fflush(stdout);
     }
 }
 
