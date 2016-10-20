@@ -40,7 +40,7 @@ regular: regular.cc
 	$(CC) -o regular regular.cc 
 
 git-commit:
-	git add *.cc *.h *.l *.y Makefile >> .local.git.out  || echo
+	git add *.cc *.c *.h *.l *.y Makefile >> .local.git.out  || echo
 	git add test-shell/testall.out >> .local.git.out  || echo
 	git commit -a -m 'Commit' >> .local.git.out || echo
 	git push
