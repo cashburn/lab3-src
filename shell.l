@@ -129,7 +129,6 @@ void scan_string(const char* str)
                         char * s = yytext+1;
                         strncpy(tmp, yytext+1, end-(yytext+1));
                         pwname = getpwnam(tmp);
-                        sprintf(tmp, "%s%s", tmp, 
                     }
                     else
                         pwname = getpwnam(yytext+1);
