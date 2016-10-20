@@ -132,6 +132,7 @@ void scan_string(const char* str)
                         if (pwname != NULL) {
                             sprintf(tmp, "%s%s", pwname->pw_dir, end);
                             yylval.string_val = strdup(tmp);
+                            return WORD;
                         }
                     }
                     else
