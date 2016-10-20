@@ -54,6 +54,11 @@ char * read_line() {
   tty_raw_mode();
 
   line_length = 0;
+  char * s = line_buffer;
+  while (*s) {
+    *s = 0;
+    s++;
+  }
 
   // Read one line until enter is typed
   while (1) {
