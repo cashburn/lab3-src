@@ -58,7 +58,7 @@ char * read_line() {
     // Read one character in raw mode.
     char ch;
     read(0, &ch, 1);
-    printf("Char: %d\n", ch);
+    //printf("Char: %d\n", ch);
 
     if (ch==10) {
       // <Enter> was typed. Return line
@@ -76,7 +76,7 @@ char * read_line() {
     }
     else if (ch == 8 || ch == 127) {
       // <backspace> was typed. Remove previous character read.
-      printf("%d\n", ch);
+      //printf("%d\n", ch);
       // Go back one character
       ch = 8;
       write(1,&ch,1);
