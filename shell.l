@@ -18,6 +18,33 @@
 #include "command.h"
 #define MAX_STR_CONST 4096
 
+//Line Editor
+char * read_line();
+
+int mygetc(FILE * f) {
+    static char *p;
+    char ch;
+
+    if (!isatty(0)) {
+        return getc(f);
+    }
+
+    if (p==NULL || *p == 0) {
+        char * s = read_line();
+        p = s;
+    }
+
+    ch = *p;
+    p++;
+
+    return ch;
+}
+
+#undef getc
+#define getc(f) mygetc(f)
+
+
+
 static  void yyunput (int c,char *buf_ptr  );
 
 char string_buf[MAX_STR_CONST];
