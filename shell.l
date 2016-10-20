@@ -38,6 +38,19 @@ void myunputc(int c) {
     unput(c);
 }
 
+void insertarg(char * arg) {
+    char * newarg = strdup(arg);
+    char * s = newarg;
+    while (*s != '\0') {
+        if (*s == ' ' || *s == '\n' || *s == '\t') {
+            *s = '\0';
+            Command::_currentSimpleCommand->insertArgument(strdup(newarg));
+            newarg = s + 1;
+        }
+        s++;
+    }
+}
+
 char * rmbackslash(char * s) {
     char * src = s;
     char * dest = (char *) malloc(sizeof(s));
@@ -236,8 +249,6 @@ void scan_string(const char* str)
                 //printf("Command: %s\n", subsh_buf);
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
-                int pid;
-                char * arr[3];
 
                 sprintf(tmp, "%s -c \"%s\"", tmp, subsh_buf);
                 FILE * fp;
@@ -249,10 +260,10 @@ void scan_string(const char* str)
                 }
 
                 char temp[MAX_STR_CONST];
-                while (fgets(temp, MAX_STR_CONST, fp) != NULL)
+                while (fgets(temp, MAX_STR_CONST, fp) != NULL) {
                     printf("%s\n", temp);
-                    scan_string(temp);
-                    yyparse();
+                    insertarg(temp)
+                }
                     //Command::_currentSimpleCommand->insertArgument(strdup(temp));
                     //sprintf(subsh_output, "%s%s", subsh_output, temp);
                 //yylval.string_val = strdup(subsh_output);
