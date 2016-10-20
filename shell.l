@@ -250,7 +250,7 @@ void scan_string(const char* str)
 
                 char temp[MAX_STR_CONST];
                 while (fgets(temp, MAX_STR_CONST, fp) != NULL)
-                    //printf("%s", temp);
+                    printf("%s\n", temp);
                     Command::_currentSimpleCommand->insertArgument(strdup(temp));
                     //sprintf(subsh_output, "%s%s", subsh_output, temp);
                 //yylval.string_val = strdup(subsh_output);
