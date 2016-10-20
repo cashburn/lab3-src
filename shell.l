@@ -232,7 +232,7 @@ void scan_string(const char* str)
                         }
 <BACKTICK>`     {
                 subsh_buf_ptr = '\0';
-                printf("Command: %s\n", subsh_buf);
+                //printf("Command: %s\n", subsh_buf);
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
                 int pid;
