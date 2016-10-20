@@ -102,7 +102,7 @@ void scan_string(const char* str)
                     yylval.string_val = strdup(getenv("HOME"));
                 }
                 else if (yytext[1] == '/') {
-                    sprintf(yylval.string_val, "%s%s", getenv("HOME"), yytext + 1);
+                    sprintf(yylval.string_val, "%s%s", strdup(getenv("HOME")), strdup(yytext + 1));
                 }
                 else {
                     struct passwd * pwname = getpwnam(yytext+1);
