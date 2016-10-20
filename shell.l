@@ -117,7 +117,7 @@ void scan_string(const char* str)
                 }
                 else if (yytext[1] == '/') {
                     char tmp[MAX_STR_CONST];
-                    sprintf(tmp, "%s%s", strdup(getenv("HOME")), strdup(yytext + 1));
+                    sprintf(tmp, "%s%s", getenv("HOME"), yytext + 1);
                     yylval.string_val = strdup(tmp);
                 }
                 else {
@@ -129,6 +129,10 @@ void scan_string(const char* str)
                         char * s = yytext+1;
                         strncpy(tmp, yytext+1, end-(yytext+1));
                         pwname = getpwnam(tmp);
+                        if (pwname != NULL) {
+                            sprintf(tmp, "%s%s", pwname->pw_dir, end);
+                            yylval.string_val = strdup(tmp);
+                        }
                     }
                     else
                         pwname = getpwnam(yytext+1);
