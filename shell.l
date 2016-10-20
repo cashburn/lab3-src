@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <pwd.h>
 #include "y.tab.h"
 #define MAX_STR_CONST 4096
 
@@ -95,8 +97,17 @@ void scan_string(const char* str)
 		/* Discard spaces and tabs */
      	}
 
-~[^ \t\n]*      {
-                yylval.string_val = strdup(getenv("HOME"));
+~[^ \t\n]*  {
+                if (yytext[1] == '\0') {
+                    yylval.string_val = strdup(getenv("HOME"));
+                }
+                else if (yytext[1] == '/') {
+                    sprintf(yylval.string_val, "%s%s", getenv("HOME"), yytext + 1);
+                }
+                else {
+                    struct passwd * pwname = getpwnam(yytext+1);
+                    yylval.string_val = strdup(pwname->pw_dir);
+                }
                 return WORD;
         }
 
