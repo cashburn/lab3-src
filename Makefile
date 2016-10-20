@@ -24,8 +24,8 @@ command.o: command.cc
 tty-raw-mode.o: tty-raw-mode.c
 	$(CC) -c tty-raw-mode.c
 
-read-line.o: read-line.c
-	$(CC) -c read-line.c
+read-line.o: read-line.cc
+	$(CC) -c read-line.cc
 
 shell: y.tab.o lex.yy.o command.o tty-raw-mode.o read-line.o
 	$(CC) -o shell lex.yy.o y.tab.o command.o tty-raw-mode.o read-line.o -lfl
