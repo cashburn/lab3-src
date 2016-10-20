@@ -69,6 +69,9 @@ char * read_line() {
       // Print newline
       write(1,&ch,1);
 
+      historynew.push_back(strdup(line_buffer));
+      history_index = historynew.size() - 1;
+
       break;
     }
     else if (ch == 31) {
@@ -191,9 +194,7 @@ char * read_line() {
 
   }
 
-  historynew.push_back(strdup(line_buffer));
-  history_index = historynew.size() - 1;
-
+  
   // Add eol and null char at the end of string
   line_buffer[line_length]=10;
   line_length++;
