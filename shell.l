@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include "y.tab.h"
+#include "command.h"
 #define MAX_STR_CONST 4096
 
 static  void yyunput (int c,char *buf_ptr  );
