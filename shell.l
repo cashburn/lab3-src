@@ -253,7 +253,7 @@ void scan_string(const char* str)
                     //printf("%s", temp);
                     Command::_currentSimpleCommand->insertArgument(temp);
                     //sprintf(subsh_output, "%s%s", subsh_output, temp);
-                yylval.string_val = strdup(subsh_output);
+                //yylval.string_val = strdup(subsh_output);
 
                 //status = pclose(fp);
                 /*if (status == -1) {
@@ -277,5 +277,5 @@ void scan_string(const char* str)
                 */
 
                 BEGIN(0);
-                return WORD;
+                //return WORD;
                 }
