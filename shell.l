@@ -142,7 +142,9 @@ $\{.*\}   {
                     s++;
                 }
                 *t = '\0';
-                yylval.string_val = strdup(getenv(tmp));
+                char * env = getenv(tmp);
+                if (env != NULL)
+                    yylval.string_val = strdup(env);
                 return WORD;
         }
 
