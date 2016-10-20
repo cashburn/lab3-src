@@ -131,7 +131,7 @@ void scan_string(const char* str)
                 BEGIN(BACKTICK);
         }
 
-"${"   {
+$\{.*\}   {
                 char * beg = yytext + 2;
                 char * s = beg;
                 char tmp[MAX_STR_CONST];\
