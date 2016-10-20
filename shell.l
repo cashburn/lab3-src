@@ -95,7 +95,7 @@ void scan_string(const char* str)
 		/* Discard spaces and tabs */
      	}
 
-"~*"     {
+~*      {
                 yylval.string_val = strdup(getenv("HOME"));
                 return WORD;
         }
