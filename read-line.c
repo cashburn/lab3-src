@@ -58,6 +58,7 @@ char * read_line() {
     // Read one character in raw mode.
     char ch;
     read(0, &ch, 1);
+    printf("Char: %d\n", ch);
 
     if (ch>=32) {
       // It is a printable character. 
@@ -86,9 +87,9 @@ char * read_line() {
       line_buffer[0]=0;
       break;
     }
-    else if (ch == 8 || ch == 127) {
+    else if (ch == 8) {
       // <backspace> was typed. Remove previous character read.
-      printf("%d", ch);
+      printf("%d\n", ch);
       // Go back one character
       ch = 8;
       write(1,&ch,1);
