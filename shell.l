@@ -238,7 +238,7 @@ void scan_string(const char* str)
                 int pid;
                 char * arr[3];
 
-                sprintf(tmp, "%s -c %s", tmp, subsh_buf);
+                sprintf(tmp, "%s -c \"%s\"", tmp, subsh_buf);
                 FILE * fp;
                 int status;
                 fp = popen(tmp, "r");
