@@ -192,7 +192,7 @@ char * read_line() {
   }
 
   historynew.push_back(strdup(line_buffer));
-  history_index = historynew.size();
+  history_index = historynew.size() - 1;
 
   // Add eol and null char at the end of string
   line_buffer[line_length]=10;
