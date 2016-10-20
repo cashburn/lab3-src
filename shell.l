@@ -12,7 +12,10 @@
 #include <iostream>
 #include <string>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <pwd.h>
 #include "y.tab.h"
+#include "command.h"
 #define MAX_STR_CONST 4096
 
 static  void yyunput (int c,char *buf_ptr  );
@@ -33,6 +36,19 @@ static  void yyunput (int c,char *buf_ptr  );
 
 void myunputc(int c) {
     unput(c);
+}
+
+void insertarg(char * arg) {
+    char * newarg = strdup(arg);
+    char * s = newarg;
+    while (*s != '\0') {
+        if (*s == ' ' || *s == '\n' || *s == '\t') {
+            *s = '\0';
+            Command::_currentSimpleCommand->insertArgument(strdup(newarg));
+            newarg = s + 1;
+        }
+        s++;
+    }
 }
 
 char * rmbackslash(char * s) {
@@ -95,8 +111,19 @@ void scan_string(const char* str)
 		/* Discard spaces and tabs */
      	}
 
-"~"     {
-                yylval.string_val = strdup(getenv("HOME"));
+~[^ \t\n]*  {
+                if (yytext[1] == '\0') {
+                    yylval.string_val = strdup(getenv("HOME"));
+                }
+                else if (yytext[1] == '/') {
+                    char tmp[MAX_STR_CONST];
+                    sprintf(tmp, "%s%s", strdup(getenv("HOME")), strdup(yytext + 1));
+                    yylval.string_val = strdup(tmp);
+                }
+                else {
+                    struct passwd * pwname = getpwnam(yytext+1);
+                    yylval.string_val = strdup(pwname->pw_dir);
+                }
                 return WORD;
         }
 
@@ -219,13 +246,11 @@ void scan_string(const char* str)
                         }
 <BACKTICK>`     {
                 subsh_buf_ptr = '\0';
-                printf("Command: %s\n", subsh_buf);
+                //printf("Command: %s\n", subsh_buf);
                 char tmp[MAX_STR_CONST];
                 readlink("/proc/self/exe", tmp, MAX_STR_CONST);
-                int pid;
-                char * arr[3];
 
-                sprintf(tmp, "%s -c %s", tmp, subsh_buf);
+                sprintf(tmp, "%s -c \"%s\"", tmp, subsh_buf);
                 FILE * fp;
                 int status;
                 fp = popen(tmp, "r");
@@ -235,10 +260,13 @@ void scan_string(const char* str)
                 }
 
                 char temp[MAX_STR_CONST];
-                while (fgets(temp, MAX_STR_CONST, fp) != NULL)
-                    //printf("%s", temp);
-                    sprintf(subsh_output, "%s%s", subsh_output, temp);
-                yylval.string_val = strdup(subsh_output);
+                while (fgets(temp, MAX_STR_CONST, fp) != NULL) {
+                    //printf("%s\n", temp);
+                    insertarg(temp);
+                }
+                    //Command::_currentSimpleCommand->insertArgument(strdup(temp));
+                    //sprintf(subsh_output, "%s%s", subsh_output, temp);
+                //yylval.string_val = strdup(subsh_output);
 
                 //status = pclose(fp);
                 /*if (status == -1) {

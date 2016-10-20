@@ -79,7 +79,7 @@ union YYSTYPE
 #line 18 "shell.y" /* yacc.c:1909  */
 
 		char   *string_val;
-
+	
 
 #line 85 "y.tab.h" /* yacc.c:1909  */
 };
