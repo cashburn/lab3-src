@@ -12,7 +12,7 @@
 #include <vector>
 
 #define MAX_BUFFER_LINE 2048
-
+using namespace std;
 void tty_raw_mode(void);
 
 // Buffer where line is stored
