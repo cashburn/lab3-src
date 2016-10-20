@@ -275,5 +275,5 @@ void scan_string(const char* str)
                 */
 
                 BEGIN(0);
-                //return WORD;
+                return WORD;
                 }
