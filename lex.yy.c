@@ -919,28 +919,30 @@ YY_RULE_SETUP
                     s++;
                 }
                 *t = '\0';
-                yylval.string_val = strdup(getenv(tmp));
+                char * env = getenv(tmp);
+                if (env != NULL)
+                    yylval.string_val = strdup(env);
                 return WORD;
         }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 149 "shell.l"
+#line 151 "shell.l"
 {
 		return NEWLINE;
 	}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 153 "shell.l"
+#line 155 "shell.l"
 {
 		/* Discard spaces and tabs */
      	}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 157 "shell.l"
+#line 159 "shell.l"
 {
                 if (yytext[1] == '\0') {
                     yylval.string_val = strdup(getenv("HOME"));
@@ -978,56 +980,56 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 192 "shell.l"
+#line 194 "shell.l"
 {
 		return GREAT;
 	}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 196 "shell.l"
+#line 198 "shell.l"
 {
                 return PIPE;
         }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 200 "shell.l"
+#line 202 "shell.l"
 {
                 return LESS;
         }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 204 "shell.l"
+#line 206 "shell.l"
 {
                 return AND;
         }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 208 "shell.l"
+#line 210 "shell.l"
 {
                 return GREATGREAT;
         }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 212 "shell.l"
+#line 214 "shell.l"
 {
                 return GREATAND;
         }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 216 "shell.l"
+#line 218 "shell.l"
 {
                 return GREATGREATAND;
         }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 221 "shell.l"
+#line 223 "shell.l"
 {
 		/* Assume that file names have only alpha chars */
 
@@ -1072,7 +1074,7 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 262 "shell.l"
+#line 264 "shell.l"
 {
                         *esc_buf_ptr = *yytext;
                         yylval.string_val = strdup(esc_buf);
@@ -1089,7 +1091,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 276 "shell.l"
+#line 278 "shell.l"
 {
                     char * yptr = yytext;
                     *esc_buf_ptr = *yptr;
@@ -1099,7 +1101,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 283 "shell.l"
+#line 285 "shell.l"
 {
                 string_buf_ptr = '\0';
                 //printf("The quoted string: %s\n", string_buf);
@@ -1110,7 +1112,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 291 "shell.l"
+#line 293 "shell.l"
 {
                 char * yptr = yytext;
                 while (*yptr)
@@ -1119,38 +1121,38 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 297 "shell.l"
+#line 299 "shell.l"
 *string_buf_ptr++ = '\n';
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 298 "shell.l"
+#line 300 "shell.l"
 *string_buf_ptr++ = '\t';
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 299 "shell.l"
+#line 301 "shell.l"
 *string_buf_ptr++ = '\r';
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 300 "shell.l"
+#line 302 "shell.l"
 *string_buf_ptr++ = '\b';
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 301 "shell.l"
+#line 303 "shell.l"
 *string_buf_ptr++ = '\f';
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 302 "shell.l"
+#line 304 "shell.l"
 *string_buf_ptr++ = yytext[1];
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 304 "shell.l"
+#line 306 "shell.l"
 {
                 char * yptr = yytext;
                 while (*yptr)
@@ -1159,7 +1161,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 309 "shell.l"
+#line 311 "shell.l"
 {
                 subsh_buf_ptr = '\0';
                 //printf("Command: %s\n", subsh_buf);
@@ -1211,10 +1213,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 357 "shell.l"
+#line 359 "shell.l"
 ECHO;
 	YY_BREAK
-#line 1218 "lex.yy.c"
+#line 1220 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(QUOTE):
 case YY_STATE_EOF(BACKTICK):
@@ -2212,4 +2214,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 357 "shell.l"
+#line 359 "shell.l"
