@@ -121,7 +121,22 @@ void scan_string(const char* str)
                     yylval.string_val = strdup(tmp);
                 }
                 else {
-                    struct passwd * pwname = getpwnam(yytext+1);
+                    
+                    char * end = strchr(yytext+1, '/');
+                    struct passwd * pwname = NULL;
+                    if (end != NULL) {
+                        char tmp[MAX_STR_CONST];
+                        char * s = yytext+1;
+                        strncpy(tmp, yytext+1, end-(yytext+1));
+                        pwname = getpwnam(tmp);
+                        sprintf(tmp, "%s%s", tmp, 
+                    }
+                    else
+                        pwname = getpwnam(yytext+1);
+                    if (pwname == NULL) {
+                        yylval.string_val = strdup(getenv("HOME"));
+                        return WORD;
+                    }
                     yylval.string_val = strdup(pwname->pw_dir);
                 }
                 return WORD;
