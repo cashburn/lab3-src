@@ -133,10 +133,43 @@ char * read_line() {
 	// echo line
 	write(1, line_buffer, line_length);
       }
+
+      if (ch1==91 && ch2==66) {
+        // Down arrow. Print previous line in history.
+
+	// Erase old line
+	// Print backspaces
+	int i = 0;
+	for (i =0; i < line_length; i++) {
+	  ch = 8;
+	  write(1,&ch,1);
+	}
+
+	// Print spaces on top
+	for (i =0; i < line_length; i++) {
+	  ch = ' ';
+	  write(1,&ch,1);
+	}
+
+	// Print backspaces
+	for (i =0; i < line_length; i++) {
+	  ch = 8;
+	  write(1,&ch,1);
+	}	
+
+	// Copy line from history
+	strcpy(line_buffer, history[history_index-1]);
+	line_length = strlen(line_buffer);
+	history_index=(history_index-1)%history_length;
+
+	// echo line
+	write(1, line_buffer, line_length);
+
+      }
       
     }
 
-    if (ch>=32) {
+    else if (ch>=32) {
       // It is a printable character. 
 
       // Do echo
