@@ -60,20 +60,7 @@ char * read_line() {
     read(0, &ch, 1);
     printf("Char: %d\n", ch);
 
-    if (ch>=32) {
-      // It is a printable character. 
-
-      // Do echo
-      write(1,&ch,1);
-
-      // If max number of character reached return.
-      if (line_length==MAX_BUFFER_LINE-2) break; 
-
-      // add char to buffer.
-      line_buffer[line_length]=ch;
-      line_length++;
-    }
-    else if (ch==10) {
+    if (ch==10) {
       // <Enter> was typed. Return line
       
       // Print newline
@@ -87,7 +74,7 @@ char * read_line() {
       line_buffer[0]=0;
       break;
     }
-    else if (ch == 8) {
+    else if (ch == 8 || ch == 127) {
       // <backspace> was typed. Remove previous character read.
       printf("%d\n", ch);
       // Go back one character
@@ -148,6 +135,21 @@ char * read_line() {
       }
       
     }
+
+    if (ch>=32) {
+      // It is a printable character. 
+
+      // Do echo
+      write(1,&ch,1);
+
+      // If max number of character reached return.
+      if (line_length==MAX_BUFFER_LINE-2) break; 
+
+      // add char to buffer.
+      line_buffer[line_length]=ch;
+      line_length++;
+    }
+
 
   }
 
