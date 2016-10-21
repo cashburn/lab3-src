@@ -205,11 +205,13 @@ char * read_line() {
         //ch = line_buffer[i];
         //write(1,&ch,1);
       }
-
-      line_buffer[cursor] = ch;
+      
+    // add char to buffer.
+      line_buffer[cursor]=ch;
       line_length++;
       cursor++;
-      
+
+
       // Do echo
       for (int i = cursor; i < line_length; i++) {
         ch = line_buffer[i];
@@ -219,10 +221,6 @@ char * read_line() {
       // If max number of character reached return.
       if (line_length==MAX_BUFFER_LINE-2) break; 
 
-      // add char to buffer.
-      line_buffer[cursor]=ch;
-      line_length++;
-      cursor++;
     }
 
 
