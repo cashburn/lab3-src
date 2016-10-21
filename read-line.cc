@@ -178,6 +178,17 @@ char * read_line() {
 	write(1, line_buffer, line_length);
 
       }
+
+      else if (ch1 == 91 && ch2 == 67) {
+        if (line_length == 0)
+          continue;
+      
+        //printf("%d\n", ch);
+        // Go back one character
+        ch = 8;
+        write(1,&ch,1);
+
+      }
       
     }
 
