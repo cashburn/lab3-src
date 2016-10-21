@@ -128,7 +128,7 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, history[history_index-1]);
+	strcpy(line_buffer, history[history_index]);
 	line_length = strlen(line_buffer);
 	history_index--;
 
@@ -139,7 +139,7 @@ char * read_line() {
       if (ch1==91 && ch2==66) {
         // Down arrow. Print previous line in history.
 
-        if (history_index > history.size() - 1)
+        if (history_index > history.size() - 2)
             continue;
 	// Erase old line
 	// Print backspaces
