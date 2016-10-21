@@ -128,7 +128,7 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, history[history_index]);
+	strcpy(line_buffer, history[history_index-1]);
 	line_length = strlen(line_buffer);
 	history_index--;
 
