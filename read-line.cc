@@ -82,6 +82,14 @@ char * read_line() {
       if (line_length == 0 || cursor == 0)
           continue;
       
+      for (int i = cursor; i < line_length; i++) {
+          line_buffer[i-1] = line_buffer[i];
+      }
+      
+      // Remove one character from buffer
+      line_length--;
+      cursor--;
+      
       //printf("%d\n", ch);
       // Go back one character
       ch = 8;
@@ -95,10 +103,7 @@ char * read_line() {
       ch = 8;
       write(1,&ch,1);
 
-      // Remove one character from buffer
-      line_length--;
-      cursor--;
-
+      
       for (int i = cursor; i < line_length; i++) {
         ch = line_buffer[i];
         write(1, &ch, 1);
