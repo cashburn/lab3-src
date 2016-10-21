@@ -240,6 +240,12 @@ char * read_line() {
       // If max number of character reached return.
       if (line_length==MAX_BUFFER_LINE-2) break;
 
+      ch = 32;
+      write(1, &ch, 1);
+
+      ch = 8;
+      write(1, &ch, 1);
+      
       for (int i = cursor; i < line_length; i++) {
         ch = 27;
         write(1,&ch,1);
