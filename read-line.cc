@@ -79,7 +79,7 @@ char * read_line() {
     }
     else if (ch == 8 || ch == 127) {
       // <backspace> was typed. Remove previous character read.
-      if (line_length == 0)
+      if (line_length == 0 || cursor == 0)
           continue;
       
       //printf("%d\n", ch);
@@ -98,6 +98,26 @@ char * read_line() {
       // Remove one character from buffer
       line_length--;
       cursor--;
+
+      for (int i = cursor; i < line_length; i++) {
+        ch = line_buffer[i];
+        write(1, &ch, 1);
+      }
+
+      ch = ' ';
+      write(1, &ch, 1);
+
+      ch = 8;
+      write(1, &ch, 1);
+
+      for (int i = cursor; i < line_length; i++) {
+        ch = 27;
+        write(1, &ch, 1);
+        ch = 91;
+        write(1, &ch, 1);
+        ch = 68;
+        write(1, &ch, 1);
+      }
     }
     else if (ch==27) {
       // Escape sequence. Read two chars more
@@ -240,7 +260,7 @@ char * read_line() {
       // If max number of character reached return.
       if (line_length==MAX_BUFFER_LINE-2) break;
 
-      ch = 32;
+      ch = ' ';
       write(1, &ch, 1);
 
       ch = 8;
