@@ -52,6 +52,7 @@ char * read_line() {
 
   // Read one line until enter is typed
   while (1) {
+      int history_searching = 0;
 
     // Read one character in raw mode.
     char ch;
@@ -128,7 +129,7 @@ char * read_line() {
 	  write(1,&ch,1);
 	}	
 
-	if (history_index == history.size() - 1)
+	if (!history_searching)
             history_index++;
         // Copy line from history
 	strcpy(line_buffer, history[--history_index]);
