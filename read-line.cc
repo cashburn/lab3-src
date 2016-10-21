@@ -199,14 +199,18 @@ char * read_line() {
     else if (ch>=32) {
       // It is a printable character. 
       int place = ch;
+      write(1,&ch,1);
       for (int i = line_length; i > cursor; i--) {
         line_buffer[i+1] = line_buffer[i]; 
-        ch = line_buffer[i];
-        write(1,&ch,1);
+        //ch = line_buffer[i];
+        //write(1,&ch,1);
       }
       ch = place;
       // Do echo
-      write(1,&ch,1);
+      for (int i = cursor; i < line_length; i++) {
+        ch = line_buffer[i];
+        write(1,&ch,1);
+      }
 
       // If max number of character reached return.
       if (line_length==MAX_BUFFER_LINE-2) break; 
