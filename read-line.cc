@@ -139,7 +139,7 @@ char * read_line() {
       if (ch1==91 && ch2==66) {
         // Down arrow. Print previous line in history.
 
-        if (history_index > (history.size() - 2))
+        if (history_index + 2 > history.size())
             continue;
 	// Erase old line
 	// Print backspaces
