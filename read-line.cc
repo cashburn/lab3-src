@@ -22,7 +22,7 @@ char line_buffer[MAX_BUFFER_LINE];
 // Simple history array
 // This history does not change. 
 // Yours have to be updated.
-int history_index = 0;
+int history_index = -1;
 vector<char *> history;
 int history_searching = 0;
 
@@ -106,7 +106,7 @@ char * read_line() {
       //printf("%d\n", history_index);
       if (ch1==91 && ch2==65) {
 	// Up arrow. Print next line in history.
-        if (history.size() < 1 || (history_index < 1 && history.size() > 1))
+        if (history.size() < 1 || (history_index < 0))
             continue;
 
 	// Erase old line
