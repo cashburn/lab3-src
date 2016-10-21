@@ -71,6 +71,19 @@ char * read_line() {
 
       break;
     }
+
+    else if (ch == 1) {
+      while (cursor > 0) {  
+        ch = 27;
+        write(1,&ch,1);
+        ch = 91;
+        write(1,&ch,1);
+        ch = 68;
+        write(1,&ch,1);
+        cursor--;
+      }
+    }
+
     else if (ch == 31) {
       // ctrl-?
       read_line_print_usage();
@@ -252,6 +265,7 @@ char * read_line() {
       }
 
       else if (ch1 == 91 && ch2 == 68) {
+        //left arrow key
         if (cursor <= 0)
           continue;
 
@@ -267,11 +281,12 @@ char * read_line() {
       }
 
       else if (ch1 == 91 && ch2 == 67) {
+        //right arrow key
         if (cursor >= line_length)
           continue;
 
         //printf("%d\n", ch);
-        // Go back one character
+        // Go forward one character
         ch = 27;
         write(1,&ch,1);
         ch = 91;
