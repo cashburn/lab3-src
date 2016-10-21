@@ -189,16 +189,35 @@ char * read_line() {
 
         //printf("%d\n", ch);
         // Go back one character
-        ch = 8;
+        ch = 27;
         write(1,&ch,1);
-        line_length--;
+        ch = 91;
+        write(1,&ch,1);
+        ch = 68;
+        write(1,&ch,1);
+        cursor--;
       }
+
+      else if (ch1 == 91 && ch2 == 67) {
+        if (cursor >= line_length)
+          continue;
+
+        //printf("%d\n", ch);
+        // Go back one character
+        ch = 27;
+        write(1,&ch,1);
+        ch = 91;
+        write(1,&ch,1);
+        ch = 67;
+        write(1,&ch,1);
+        cursor++;
+      }
+
       
     }
 
     else if (ch>=32) {
       // It is a printable character. 
-      int place = ch;
       write(1,&ch,1);
       for (int i = line_length + 1; i > cursor; i--) {
         line_buffer[i] = line_buffer[i-1]; 
@@ -219,7 +238,16 @@ char * read_line() {
       }
 
       // If max number of character reached return.
-      if (line_length==MAX_BUFFER_LINE-2) break; 
+      if (line_length==MAX_BUFFER_LINE-2) break;
+
+      for (int i = cursor; i < line_length; i++) {
+        ch = 27;
+        write(1,&ch,1);
+        ch = 91;
+        write(1,&ch,1);
+        ch = 68;
+        write(1,&ch,1);
+      }
 
     }
 
