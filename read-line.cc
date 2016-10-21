@@ -23,17 +23,7 @@ char line_buffer[MAX_BUFFER_LINE];
 // This history does not change. 
 // Yours have to be updated.
 int history_index = 0;
-char * history [] = {
-  (char *) "ls -al | grep x", 
-  (char *) "ps -e",
-  (char *) "cat read-line-example.c",
-  (char *) "vi hello.c",
-  (char *) "make",
-  (char *) "ls -al | grep xxx | grep yyy"
-};
-vector<char *> historynew;
-
-int history_length = sizeof(history)/sizeof(char *);
+vector<char *> history;
 
 void read_line_print_usage()
 {
@@ -70,8 +60,8 @@ char * read_line() {
 
     if (ch==10) {
       // <Enter> was typed. Return line
-      historynew.push_back(strdup(line_buffer));
-      history_index = historynew.size() - 1;
+      history.push_back(strdup(line_buffer));
+      history_index = history.size() - 1;
 
       // Print newline
       write(1,&ch,1);
@@ -114,6 +104,8 @@ char * read_line() {
       read(0, &ch2, 1);
       if (ch1==91 && ch2==65) {
 	// Up arrow. Print next line in history.
+        if (history_index > history.size() - 2)
+            continue;
 
 	// Erase old line
 	// Print backspaces
@@ -136,9 +128,9 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, historynew[history_index]);
+	strcpy(line_buffer, history[history_index]);
 	line_length = strlen(line_buffer);
-	history_index=(history_index+1)%historynew.size();
+	history_index--;
 
 	// echo line
 	write(1, line_buffer, line_length);
@@ -170,9 +162,9 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, historynew[history_index-2]);
+	strcpy(line_buffer, history[history_index-2]);
 	line_length = strlen(line_buffer);
-	history_index=(history_index-1)%historynew.size();
+	history_index--;
 
 	// echo line
 	write(1, line_buffer, line_length);
