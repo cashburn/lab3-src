@@ -24,6 +24,7 @@ char line_buffer[MAX_BUFFER_LINE];
 // Yours have to be updated.
 int history_index = 0;
 vector<char *> history;
+int history_searching = 0;
 
 void read_line_print_usage()
 {
@@ -52,7 +53,6 @@ char * read_line() {
 
   // Read one line until enter is typed
   while (1) {
-      int history_searching = 0;
 
     // Read one character in raw mode.
     char ch;
