@@ -124,6 +124,49 @@ char * read_line() {
         write(1, &ch, 1);
       }
     }
+    else if (ch == 4) {
+      // <delete> was typed. Remove current character read.
+      if (line_length == 0 || cursor == 0)
+          continue;
+      
+      for (int i = cursor+1; i < line_length; i++) {
+          line_buffer[i-1] = line_buffer[i];
+      }
+      
+      // Remove one character from buffer
+      line_length--;
+      
+      // Write a space to erase the last character read
+      ch = ' ';
+      write(1,&ch,1);
+
+      // Go back one character
+      ch = 8;
+      write(1,&ch,1);
+
+      
+      for (int i = cursor; i < line_length; i++) {
+        ch = line_buffer[i];
+        write(1, &ch, 1);
+      }
+
+      ch = ' ';
+      write(1, &ch, 1);
+
+      ch = 8;
+      write(1, &ch, 1);
+
+      for (int i = cursor; i < line_length; i++) {
+        ch = 27;
+        write(1, &ch, 1);
+        ch = 91;
+        write(1, &ch, 1);
+        ch = 68;
+        write(1, &ch, 1);
+      }
+    }
+
+
     else if (ch==27) {
       // Escape sequence. Read two chars more
       //
