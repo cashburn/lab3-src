@@ -191,7 +191,7 @@ char * read_line() {
         // Go back one character
         ch = 8;
         write(1,&ch,1);
-        cursor--;
+        line_length--;
       }
       
     }
@@ -200,12 +200,16 @@ char * read_line() {
       // It is a printable character. 
       int place = ch;
       write(1,&ch,1);
-      for (int i = line_length; i > cursor; i--) {
-        line_buffer[i+1] = line_buffer[i]; 
+      for (int i = line_length + 1; i > cursor; i--) {
+        line_buffer[i] = line_buffer[i-1]; 
         //ch = line_buffer[i];
         //write(1,&ch,1);
       }
-      ch = place;
+
+      line_buffer[cursor] = ch;
+      line_length++;
+      cursor++;
+      
       // Do echo
       for (int i = cursor; i < line_length; i++) {
         ch = line_buffer[i];
