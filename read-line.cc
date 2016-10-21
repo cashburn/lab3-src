@@ -129,8 +129,10 @@ char * read_line() {
 	  write(1,&ch,1);
 	}	
 
-	if (!history_searching)
+	if (!history_searching) {
             history_index++;
+            history_searching = 1;
+        }
         // Copy line from history
 	strcpy(line_buffer, history[--history_index]);
 	line_length = strlen(line_buffer);
