@@ -104,7 +104,7 @@ char * read_line() {
       read(0, &ch2, 1);
       if (ch1==91 && ch2==65) {
 	// Up arrow. Print next line in history.
-        if (history_index < 0)
+        if (history_index < 1)
             continue;
 
 	// Erase old line
