@@ -128,7 +128,9 @@ char * read_line() {
 	  write(1,&ch,1);
 	}	
 
-	// Copy line from history
+	if (history_index == history.size() - 1)
+            history_index++;
+        // Copy line from history
 	strcpy(line_buffer, history[--history_index]);
 	line_length = strlen(line_buffer);
 
