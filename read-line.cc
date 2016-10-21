@@ -104,7 +104,7 @@ char * read_line() {
       read(0, &ch2, 1);
       if (ch1==91 && ch2==65) {
 	// Up arrow. Print next line in history.
-        if (history_index < 1)
+        if (history_index < 0)
             continue;
 
 	// Erase old line
@@ -128,9 +128,8 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, history[history_index]);
+	strcpy(line_buffer, history[--history_index]);
 	line_length = strlen(line_buffer);
-	history_index--;
 
 	// echo line
 	write(1, line_buffer, line_length);
@@ -162,9 +161,8 @@ char * read_line() {
 	}	
 
 	// Copy line from history
-	strcpy(line_buffer, history[history_index+1]);
+	strcpy(line_buffer, history[++history_index]);
 	line_length = strlen(line_buffer);
-	history_index++;
 
 	// echo line
 	write(1, line_buffer, line_length);
