@@ -84,6 +84,18 @@ char * read_line() {
       }
     }
 
+    else if (ch == 5) {
+      while (cursor < line_length) {  
+        ch = 27;
+        write(1,&ch,1);
+        ch = 91;
+        write(1,&ch,1);
+        ch = 67;
+        write(1,&ch,1);
+        cursor++;
+      }
+    }
+
     else if (ch == 31) {
       // ctrl-?
       read_line_print_usage();
