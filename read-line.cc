@@ -25,6 +25,7 @@ char line_buffer[MAX_BUFFER_LINE];
 int history_index = -1;
 vector<char *> history;
 int history_searching = 0;
+int cursor;
 
 void read_line_print_usage()
 {
@@ -45,6 +46,7 @@ char * read_line() {
   tty_raw_mode();
 
   line_length = 0;
+  cursor = line_length;
   char * s = line_buffer;
   while (*s) {
     *s = 0;
@@ -95,6 +97,7 @@ char * read_line() {
 
       // Remove one character from buffer
       line_length--;
+      cursor--;
     }
     else if (ch==27) {
       // Escape sequence. Read two chars more
@@ -139,7 +142,7 @@ char * read_line() {
         // Copy line from history
 	strcpy(line_buffer, history[--history_index]);
 	line_length = strlen(line_buffer);
-
+        cursor = line_length;
 	// echo line
 	write(1, line_buffer, line_length);
       }
@@ -172,6 +175,7 @@ char * read_line() {
 	// Copy line from history
 	strcpy(line_buffer, history[++history_index]);
 	line_length = strlen(line_buffer);
+        cursor = line_length;
         history_searching = 0;
 
 	// echo line
@@ -179,22 +183,24 @@ char * read_line() {
 
       }
 
-      else if (ch1 == 91 && ch2 == 67) {
-        if (line_length == 0)
+      else if (ch1 == 91 && ch2 == 68) {
+        if (cursor <= 0)
           continue;
-      
+
         //printf("%d\n", ch);
         // Go back one character
         ch = 8;
         write(1,&ch,1);
-
+        cursor--;
       }
       
     }
 
     else if (ch>=32) {
       // It is a printable character. 
-
+      for (int i = line_length; i > cursor; i--) {
+        line_buffer[i+1] = line_buffer[i]; 
+      }
       // Do echo
       write(1,&ch,1);
 
@@ -202,8 +208,9 @@ char * read_line() {
       if (line_length==MAX_BUFFER_LINE-2) break; 
 
       // add char to buffer.
-      line_buffer[line_length]=ch;
+      line_buffer[cursor]=ch;
       line_length++;
+      cursor++;
     }
 
 
