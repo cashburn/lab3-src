@@ -198,9 +198,13 @@ char * read_line() {
 
     else if (ch>=32) {
       // It is a printable character. 
+      int place = ch;
       for (int i = line_length; i > cursor; i--) {
         line_buffer[i+1] = line_buffer[i]; 
+        ch = line_buffer[i];
+        write(1,&ch,1);
       }
+      ch = place;
       // Do echo
       write(1,&ch,1);
 
