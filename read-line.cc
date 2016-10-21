@@ -106,7 +106,7 @@ char * read_line() {
       //printf("%d\n", history_index);
       if (ch1==91 && ch2==65) {
 	// Up arrow. Print next line in history.
-        if (history_index < 1 && history.size() > 1)
+        if (history.size() < 1 || (history_index < 1 && history.size() > 1))
             continue;
 
 	// Erase old line
